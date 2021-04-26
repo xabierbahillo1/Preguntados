@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Preguntados</string>
+    <string name="appTitle">PREGUNTADOS</string>
+    <string name="login_userText">User</string>
+    <string name="login_userPass">Password</string>
+    <string name="login_button">Login</string>
+    <string name="login_registerText">Don\'t have an account in Trivia Crack? Click to register</string>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Preguntados</string>
+    <string name="appTitle">PREGUNTADOS</string>
+    <string name="login_userText">Usuario</string>
+    <string name="login_userPass">Contraseña</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="login_registerText">¿No tienes cuenta en Preguntados? Pulsa para registrarte</string>
+</resources>
