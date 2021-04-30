@@ -23,4 +23,5 @@
     <string name="register_error_conexionBD">Failed to connect to database</string>
     <string name="register_error_correoExiste">The email entered is already registered</string>
     <string name="register_error_usuarioExiste">The user entered is already registered</string>
+    <string name="login_sessionExpired">The session has expired</string>
 </resources>

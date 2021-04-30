@@ -12,6 +12,7 @@ public class generateAuthToken {
     private static final SecureRandom random = new SecureRandom();
     private static final char[] symbols = CHARACTERS.toCharArray();
     private static final char[] buf = new char[SECURE_TOKEN_LENGTH];
+    public static final String AUTH_CONTEXT = "com.das.preguntados.auth"; //Guarda el contexto para acceder a las preferencias de autenticacion
 
     public static String generateToken() {
         for (int idx = 0; idx < buf.length; ++idx)

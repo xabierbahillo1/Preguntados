@@ -22,4 +22,5 @@
     <string name="register_error_conexionBD">Error al conectar con la base de datos</string>
     <string name="register_error_correoExiste">El correo introducido ya está registrado</string>
     <string name="register_error_usuarioExiste">El usuario introducido ya está registrado</string>
+    <string name="login_sessionExpired">La sesión ha expirado</string>
 </resources>

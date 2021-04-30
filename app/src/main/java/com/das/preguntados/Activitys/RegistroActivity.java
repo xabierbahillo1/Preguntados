@@ -8,7 +8,9 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -123,6 +125,17 @@ public class RegistroActivity extends AppCompatActivity {
                                 }
                                 else if (respuesta[0].equals("OK")){ //Registro completado
                                     Log.d("registro","Usuario "+usuario+" registrado correctamente");
+                                    //Guardo usuario y token en las preferencias
+                                    SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(generateAuthToken.AUTH_CONTEXT, Context.MODE_PRIVATE); //Obtengo las preferencias de autenticacion
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString("usuario", usuario);
+                                    editor.putString("token",token);
+                                    editor.commit();
+                                    finish(); //Finalizo actividad actual
+                                    //Lanzo la actividad principal
+                                    Intent i = new Intent(getApplicationContext(), MainMenuActivity.class);
+                                    i.putExtra("usuario",usuario); //Envio los datos del usuario
+                                    startActivity(i);
                                 }
                             }
 
