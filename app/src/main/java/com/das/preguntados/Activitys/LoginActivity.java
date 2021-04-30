@@ -53,6 +53,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Lanzar actividad registro
+                finish(); //Finalizo mi actividad
+                Intent i = new Intent(getApplicationContext(), RegistroActivity.class);
+                startActivity(i);
             }
         });
     }

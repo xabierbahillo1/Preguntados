@@ -6,4 +6,21 @@
     <string name="login_userPass">Password</string>
     <string name="login_button">Login</string>
     <string name="login_registerText">Don\'t have an account yet? REGISTER</string>
+    <string name="register_CorreoText">Email</string>
+    <string name="register_loginText">Already have an account? LOG IN</string>
+    <string name="register_NombreText">Full Name</string>
+    <string name="register_userText">User</string>
+    <string name="register_passwordText">Password</string>
+    <string name="register_registerButton">Register</string>
+    <string name="alert_btnContinuar">Continue</string>
+    <string name="register_alertTitle">Register failed</string>
+    <string name="register_error_camposObligatorios">All fields are required</string>
+    <string name="register_error_correoIncorrecto">The email entered is incorrect</string>
+    <string name="register_error_longitudCorreo">The entered email exceeds the maximum allowed length</string>
+    <string name="register_error_longitudNombre">The entered name exceeds the maximum allowed length</string>
+    <string name="register_error_longitudUsuario">The entered user exceeds the maximum allowed length</string>
+    <string name="register_error_consultaBD">Failed to query the database</string>
+    <string name="register_error_conexionBD">Failed to connect to database</string>
+    <string name="register_error_correoExiste">The email entered is already registered</string>
+    <string name="register_error_usuarioExiste">The user entered is already registered</string>
 </resources>
