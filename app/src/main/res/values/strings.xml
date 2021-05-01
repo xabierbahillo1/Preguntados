@@ -23,4 +23,9 @@
     <string name="register_error_correoExiste">El correo introducido ya está registrado</string>
     <string name="register_error_usuarioExiste">El usuario introducido ya está registrado</string>
     <string name="login_sessionExpired">La sesión ha expirado</string>
+    <string name="login_error_camposObligatorios">Todos los campos son obligatorios</string>
+    <string name="login_error_conexionBD">Error al conectar con la base de datos</string>
+    <string name="login_error_consultaBD">Error al consultar en la base de datos</string>
+    <string name="login_error_authIncorrecta">Los datos introducidos no son correctos</string>
+    <string name="login_alertTitle">Error al iniciar sesión</string>
 </resources>

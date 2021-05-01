@@ -24,4 +24,9 @@
     <string name="register_error_correoExiste">The email entered is already registered</string>
     <string name="register_error_usuarioExiste">The user entered is already registered</string>
     <string name="login_sessionExpired">The session has expired</string>
+    <string name="login_error_camposObligatorios">All fields are required</string>
+    <string name="login_error_conexionBD">Failed to connect to database</string>
+    <string name="login_error_consultaBD">Failed to query the database</string>
+    <string name="login_alertTitle">Login failed</string>
+    <string name="login_error_authIncorrecta">The data entered is incorrect</string>
 </resources>
