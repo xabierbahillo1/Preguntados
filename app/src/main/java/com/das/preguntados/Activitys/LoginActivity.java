@@ -33,68 +33,12 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        gestionarInicioSesionAutomatico();
         //Gestion de eventos
         gestionarRegisterText();
         gestionarLoginButton();
 
-
     }
-    private void gestionarInicioSesionAutomatico(){
-         //Compruebo si tengo un usuario y token guardados en SharedPreferences
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(generateAuthToken.AUTH_CONTEXT, Context.MODE_PRIVATE); //Obtengo las preferencias de autenticacion
-        String usuario= sharedPref.getString("usuario",null); //Obtengo el usuario de las preferencias, si no existe devuelvo null
-        String token= sharedPref.getString("token",null); //Obtengo el token de las preferencias, si no existe devuelvo null
-        if (usuario!=null && token!=null){ //Si ambos no son nulos
-            //Lanzo una peticion contra la base de datos para comprobar si son datos correctos
-            Log.d("inicioSesionAutomatico","Se ha encontrado sesion para el usuario: "+usuario);
-            Data datos = new Data.Builder()
-                    .putString("usuario",usuario)
-                    .putString("token",token)
-                    .build();
 
-            OneTimeWorkRequest comprobarTokenOtwr= new OneTimeWorkRequest.Builder(comprobarTokenAuthWS.class).setInputData(datos)
-                    .build();
-
-            WorkManager.getInstance(this).getWorkInfoByIdLiveData(comprobarTokenOtwr.getId())
-                    .observe(this, new Observer<WorkInfo>() {
-                        @Override
-                        public void onChanged(WorkInfo workInfo) {
-                            //Trato la respuesta, teniendo en cuenta que es de la forma CODIGO#VALOR
-                            if(workInfo != null && workInfo.getState().isFinished()){
-
-                                String resultado=workInfo.getOutputData().getString("resultado");
-                                if (resultado!=null) {
-                                    String[] respuesta= resultado.split("#");
-                                    if (respuesta[0].equals("ERR")){
-                                        //Hay un error, por tanto continuo con el onCreate y muestro un mensaje de sesion expirada
-                                        Toast.makeText(getApplicationContext(), getString(R.string.login_sessionExpired), Toast.LENGTH_LONG).show();
-                                        //Imprimo el error por logs
-                                        Log.d("inicioSesionAutomatico","Error al comprobar token: "+respuesta[1]);
-                                        //Limpio las preferencias, eliminando el usuario y token guardados
-                                        SharedPreferences.Editor editor = sharedPref.edit();
-                                        editor.clear().apply();
-                                    }
-                                    else if (respuesta[0].equals("OK")){
-                                        //Datos de sesion correctos, por tanto lanzo la actividad principal
-                                        Log.d("inicioSesionAutomatico","Los datos de sesión son correctos");
-                                        finish(); //Finalizo actividad actual
-                                        Intent i = new Intent(getApplicationContext(), MainMenuActivity.class);
-                                        i.putExtra("usuario",usuario); //Envio los datos del usuario
-                                        startActivity(i);
-                                    }
-                                }
-
-                            }
-                        }
-                    });
-            WorkManager.getInstance(getApplicationContext()).enqueue(comprobarTokenOtwr);
-        }
-        else{
-            Log.d("inicioSesionAutomatico","No se ha encontrado ninguna sesión guardada");
-        }
-
-    }
 
     private void gestionarRegisterText(){
         //Gestiona los eventos del textView registerText
