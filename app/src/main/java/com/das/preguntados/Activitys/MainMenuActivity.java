@@ -3,6 +3,8 @@ package com.das.preguntados.Activitys;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.das.preguntados.R;
 
@@ -30,6 +32,29 @@ public class MainMenuActivity extends AppCompatActivity {
             usuario=extras.getString("usuario");
         }
 
+        // Funcionalidad de los botones
+        Button btnJugar = findViewById(R.id.btnJugar);
+        btnJugar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+
+        Button btnRanking = findViewById(R.id.btnRanking);
+        btnRanking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        Button btnPerfil = findViewById(R.id.btnPerfil);
+        btnPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
