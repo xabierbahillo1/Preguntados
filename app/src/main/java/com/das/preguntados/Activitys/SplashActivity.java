@@ -24,6 +24,7 @@ public class SplashActivity extends AppCompatActivity {
             - Si hay, comprueba si es correcta y envia a MainMenuActivity
             - Si no hay o sesion incorrecta envia a LoginActivity
      */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

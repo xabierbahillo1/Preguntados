@@ -15,6 +15,10 @@ import java.net.URL;
 
 public class comprobarTokenAuthWS extends Worker {
     /*WEBSERVICE para comprobar si un usuario y token son correctos
+     Es necesario pasar como parametros: Usuario, y Token de autenticacion
+        Respuesta: CODIGO#VALOR
+            CODIGO: ERR -> Error, OK -> Sesion correcta
+            VALOR: En el caso de error, literal con el error para imprimir por los logs
      */
     public comprobarTokenAuthWS(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);

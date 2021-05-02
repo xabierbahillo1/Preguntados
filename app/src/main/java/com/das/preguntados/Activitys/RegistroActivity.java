@@ -27,6 +27,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegistroActivity extends AppCompatActivity {
+    /*PANTALLA DE REGISTRO. Permite al usuario registrar un usuario en el sistema y pasar a MainMenuActivity
+   o pasar a la actividad LoginActivity para hacer login con un usuario existente
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

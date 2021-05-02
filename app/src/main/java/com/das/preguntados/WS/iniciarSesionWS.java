@@ -14,7 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class iniciarSesionWS extends Worker {
-    /*WEBSERVICE para comprobar si un usuario y token son correctos
+    /*WEBSERVICE para iniciar sesion en la aplicacion
+        Es necesario pasar como parametros: Usuario, Clave y Token de autenticacion
+        Respuesta: CODIGO#VALOR
+            CODIGO: ERR -> Error, OK -> Login correcto
+            VALOR: En el caso de error, referencia para obtener el string en strings.xml
      */
     public iniciarSesionWS(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);

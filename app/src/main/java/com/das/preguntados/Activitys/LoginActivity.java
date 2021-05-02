@@ -17,16 +17,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.das.preguntados.Common.generateAuthToken;
 import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.R;
-import com.das.preguntados.WS.comprobarTokenAuthWS;
 import com.das.preguntados.WS.iniciarSesionWS;
-import com.das.preguntados.WS.registroWS;
+
 
 public class LoginActivity extends AppCompatActivity {
+    /*PANTALLA DE LOGIN. Permite al usuario iniciar sesión con un usuario registrado en el sistema y pasar a MainMenuActivity
+    o pasar a la actividad RegistroActivity para registrar un usuario
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
