@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activitys.SplashActivity"
+        <activity android:name=".Activitys.GameActivity"></activity>
+        <activity
+            android:name=".Activitys.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,9 +24,7 @@
         </activity>
         <activity android:name=".Activitys.RegistroActivity" />
         <activity android:name=".Activitys.MainMenuActivity" />
-        <activity android:name=".Activitys.LoginActivity">
-
-        </activity>
+        <activity android:name=".Activitys.LoginActivity"></activity>
     </application>
 
 </manifest>
