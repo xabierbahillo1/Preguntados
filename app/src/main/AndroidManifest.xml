@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activitys.GameActivity"></activity>
+        <activity android:name=".GameSelectorActivity"></activity>
+        <activity android:name=".Activitys.GameActivity" />
         <activity
             android:name=".Activitys.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -24,7 +25,11 @@
         </activity>
         <activity android:name=".Activitys.RegistroActivity" />
         <activity android:name=".Activitys.MainMenuActivity" />
-        <activity android:name=".Activitys.LoginActivity"></activity>
+        <activity android:name=".Activitys.LoginActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

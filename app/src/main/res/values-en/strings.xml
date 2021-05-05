@@ -29,4 +29,7 @@
     <string name="login_error_consultaBD">Failed to query the database</string>
     <string name="login_alertTitle">Login failed</string>
     <string name="login_error_authIncorrecta">The data entered is incorrect</string>
+    <string name="game_finTiempo">End of time</string>
+    <string name="game_resultadoCorrecto">Correct</string>
+    <string name="game_resultadoIncorrecto">Wrong</string>
 </resources>

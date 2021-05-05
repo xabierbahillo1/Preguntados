@@ -1,20 +1,16 @@
 package com.das.preguntados.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.content.Intent;
-import android.graphics.BlendMode;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.TextView;
 
 import com.das.preguntados.GameManager.ColeccionPreguntas;
@@ -23,19 +19,23 @@ import com.das.preguntados.R;
 
 public class GameActivity extends AppCompatActivity {
     /*ACTIVIDAD QUE GESTIONA EL JUEGO
-    LAS PREGUNTAS YA ESTAN CARGADAS EN LA MAE COLECCIONPREGUNTAS*/
+    LAS PREGUNTAS YA ESTAN CARGADAS EN LA MAE COLECCIONPREGUNTAS
+    TODO: Habra que pasarle el modo de juego a esta actividad, y esta actividad cuando termine devolver datos del juego.
+     Hacer algun metodo para que cuando pulse atras avise que se finalizará el juego y no se guardarán estadisticas*/
     boolean isOn=true;
     Pregunta preguntaActual; //Guarda la pregunta que se está mostrando
     Contador contadorPregunta; //Guarda el contador con el tiempo para responder a la pregunta
-
+    int modo; //Modo de juego
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        //Cargamos preguntas de prueba en ColeccionPreguntas (en un futuro sera una peticion a BD)
-        ColeccionPreguntas lasPreguntas=ColeccionPreguntas.obtenerMiColeccion();
-        lasPreguntas.anadirPregunta(new Pregunta("ARTE","¿Qué signo del zodiaco eres si naciste el 16 de agosto?","Leo","Piscis","Acuario","A"));
-        lasPreguntas.anadirPregunta(new Pregunta("GEOGRAFIA","¿Cuál es el simbolo arquitectónico más importante en Sevilla?","Torre del Oro","La Catedral","La Giralda","C"));
+        //Obtengo el modo de juego
+        Bundle extras= getIntent().getExtras();
+        if (extras!= null){
+            modo=extras.getInt("modo");
+            Log.d("gameActivity","Modo de juego= "+modo);
+        }
         gestionarEventosBotones();
         gestionarJuego();
     }
@@ -55,6 +55,7 @@ public class GameActivity extends AppCompatActivity {
         preguntaActual= ColeccionPreguntas.obtenerMiColeccion().obtenerPreguntaAlAzar();
         if (preguntaActual!=null){
             //Cargo los datos de la pregunta en los distintos elementos del layout
+            ((TextView)findViewById(R.id.resultadoPreguntaView)).setVisibility(View.GONE);
             ((TextView)findViewById(R.id.categoryTextView)).setText(preguntaActual.getGeneroPregunta());
             ((TextView)findViewById(R.id.preguntaTextView)).setText(preguntaActual.getTextoPregunta());
             Button botonA=findViewById(R.id.buttonRespuestaA);
@@ -85,15 +86,27 @@ public class GameActivity extends AppCompatActivity {
 
             if (respuesta == null) { //Si no hay respuesta, es que se ha acabado el tiempo
                 pintarBoton(preguntaActual.getOpcionGanadora(), "green");
+                TextView resultado= findViewById(R.id.resultadoPreguntaView);
+                resultado.setText(getString(R.string.game_finTiempo));
+                resultado.setTextColor(Color.MAGENTA);
+                resultado.setVisibility(View.VISIBLE);
             }
             else { //Si hay respuesta, compruebo si es correcta o no
                 if (respuesta.equals(preguntaActual.getOpcionGanadora())) { //Respuesta correcta
                     //Sumo puntuacion
                     continuar=true;
+                    TextView resultado= findViewById(R.id.resultadoPreguntaView);
+                    resultado.setText(getString(R.string.game_resultadoCorrecto));
+                    resultado.setTextColor(Color.GREEN);
+                    resultado.setVisibility(View.VISIBLE);
                 } else { //Respuesta incorrecta
                     //Pinto de rojo el mio, pinto de verde el bueno
                     pintarBoton(respuesta, "red");
                     //Dependiendo del modo de juego, resto puntuacion
+                    TextView resultado= findViewById(R.id.resultadoPreguntaView);
+                    resultado.setText(getString(R.string.game_resultadoIncorrecto));
+                    resultado.setTextColor(Color.RED);
+                    resultado.setVisibility(View.VISIBLE);
                 }
             }
             gestionarFinDelJuego(continuar);

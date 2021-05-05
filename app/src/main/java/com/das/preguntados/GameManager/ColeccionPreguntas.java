@@ -34,5 +34,7 @@ public class ColeccionPreguntas {
         //Añade una pregunta a la lista
         preguntas.add(pPregunta);
     }
-
+    public int obtenerNumeroPreguntas(){
+        return preguntas.size();
+    }
 }

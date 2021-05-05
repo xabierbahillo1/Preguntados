@@ -28,4 +28,7 @@
     <string name="login_error_consultaBD">Error al consultar en la base de datos</string>
     <string name="login_error_authIncorrecta">Los datos introducidos no son correctos</string>
     <string name="login_alertTitle">Error al iniciar sesión</string>
+    <string name="game_finTiempo">Fin del tiempo</string>
+    <string name="game_resultadoCorrecto">Correcto</string>
+    <string name="game_resultadoIncorrecto">Incorrecto</string>
 </resources>
