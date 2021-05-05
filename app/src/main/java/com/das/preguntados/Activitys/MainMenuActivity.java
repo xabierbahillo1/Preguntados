@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.das.preguntados.R;
 
@@ -33,7 +34,7 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
         // Funcionalidad de los botones
-        Button btnJugar = findViewById(R.id.btnJugar);
+        ImageButton btnJugar = findViewById(R.id.btnJugar);
         btnJugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,6 +43,7 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         Button btnRanking = findViewById(R.id.btnRanking);
+        btnRanking.setText(R.string.btnRanking);
         btnRanking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,6 +52,7 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         Button btnPerfil = findViewById(R.id.btnPerfil);
+        btnPerfil.setText(R.string.btnEditarPerfil);
         btnPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
