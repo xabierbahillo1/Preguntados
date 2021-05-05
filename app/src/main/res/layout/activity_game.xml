@@ -59,6 +59,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="30dp"
+            android:background="@drawable/boton_redondeado_gris"
             android:text="RESPUESTA A" />
 
         <Button
@@ -68,6 +69,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="30dp"
+            android:background="@drawable/boton_redondeado_gris"
             android:text="RESPUESTA B" />
 
         <Button
@@ -77,6 +79,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="30dp"
+            android:background="@drawable/boton_redondeado_gris"
             android:text="RESPUESTA C" />
 
     </LinearLayout>
@@ -94,7 +97,7 @@
         app:layout_constraintVertical_bias="0.089" >
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/preguntaTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center|center_horizontal|center_vertical"
