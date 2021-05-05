@@ -2,8 +2,10 @@ package com.das.preguntados.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.das.preguntados.GameSelectorActivity;
 import com.das.preguntados.R;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -29,7 +31,8 @@ public class MainMenuActivity extends AppCompatActivity {
         if (extras!= null){
             usuario=extras.getString("usuario");
         }
-
+        Intent i = new Intent(getApplicationContext(), GameSelectorActivity.class);
+        startActivity(i);
 
     }
 }
