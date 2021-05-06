@@ -1,18 +1,23 @@
-package com.das.preguntados;
+package com.das.preguntados.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.das.preguntados.Activitys.GameActivity;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
+import com.das.preguntados.R;
 import com.das.preguntados.WS.obtenerPreguntasWS;
+
+import java.util.Locale;
 
 public class GameSelectorActivity extends AppCompatActivity {
     /*
@@ -40,9 +45,15 @@ public class GameSelectorActivity extends AppCompatActivity {
     }
 
     private void iniciarJuego(int modo){
+        //Obtengo el idioma de la aplicacion
+        String elIdioma = Locale.getDefault().getLanguage();
+        String idioma="0"; //Idioma por defecto
+        if (elIdioma.equals("en")){ //Si es ingles,
+            idioma="1";
+        }
         //Carga las preguntas desde la base de datos en ColeccionPreguntas
         Data datos = new Data.Builder()
-                .putString("idioma","0")
+                .putString("idioma",idioma)
                 .build();
 
         OneTimeWorkRequest obtenerPreguntasOtwr= new OneTimeWorkRequest.Builder(obtenerPreguntasWS.class).setInputData(datos)
@@ -58,12 +69,21 @@ public class GameSelectorActivity extends AppCompatActivity {
                                 //Inicia el juego con el modo introducido
                                 Intent i = new Intent(getApplicationContext(), GameActivity.class);
                                 i.putExtra("modo",modo);
-                                startActivity(i);
+                                startActivityForResult(i,100);
                             }
                         }
                     }
                 });
         WorkManager.getInstance(getApplicationContext()).enqueue(obtenerPreguntasOtwr);
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Ha finalizado un ActivityForResult, recupero la informacion
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 100) { //Si ha finalizado correctamente la actividad juego
+            int preguntasCorrectas = data.getIntExtra("preguntasCorrectas",0);
+            int preguntasIncorrectas = data.getIntExtra("preguntaIncorrectas",0);
+        }
     }
 }

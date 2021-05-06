@@ -2,6 +2,7 @@ package com.das.preguntados.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 
 import android.os.Bundle;
@@ -20,12 +21,17 @@ import com.das.preguntados.R;
 public class GameActivity extends AppCompatActivity {
     /*ACTIVIDAD QUE GESTIONA EL JUEGO
     LAS PREGUNTAS YA ESTAN CARGADAS EN LA MAE COLECCIONPREGUNTAS
+    Modo 1: Consiste en acertar el mayor número de preguntas posibles
     TODO: Habra que pasarle el modo de juego a esta actividad, y esta actividad cuando termine devolver datos del juego.
      Hacer algun metodo para que cuando pulse atras avise que se finalizará el juego y no se guardarán estadisticas*/
+
     boolean isOn=true;
     Pregunta preguntaActual; //Guarda la pregunta que se está mostrando
     Contador contadorPregunta; //Guarda el contador con el tiempo para responder a la pregunta
     int modo; //Modo de juego
+
+    private int preguntasCorrectas;
+    private int preguntasIncorrectas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,16 +43,37 @@ public class GameActivity extends AppCompatActivity {
             Log.d("gameActivity","Modo de juego= "+modo);
         }
         gestionarEventosBotones();
-        gestionarJuego();
+        preguntasCorrectas=0;
+        preguntasIncorrectas=0;
+        if (modo==1){
+            gestionarJuegoModo1();
+        }
+        if (modo==2){
+            gestionarInicioJuegoModo2();
+        }
     }
 
-    private void gestionarJuego(){
-        //Metodo principal encargado de gestionar el juego. Carga una pregunta que se muestra durante un tiempo
+    private void gestionarJuegoModo1(){
+        //Metodo principal encargado de gestionar el juego con el modo 1
+        //Carga una pregunta que se muestra durante un tiempo
         isOn=true; //Inicio el juego
-        //Se inicializa el tiempo para responder la pregunta
+        //Se inicializa el tiempo para responder la pregunta (15 segundos)
         contadorPregunta= new Contador(15*1000,1000);
         contadorPregunta.start();
         //Muestro los datos de la pregunta
+        cargarPregunta();
+    }
+    private void gestionarInicioJuegoModo2(){
+        //Metodo principal encargado de gestionar el inicio del juego con el modo 2
+
+        //Se inicializa el tiempo para responder las preguntas(100 segundos)
+        contadorPregunta= new Contador(100*1000,1000);
+        contadorPregunta.start();
+        gestionarJuegoModo2();
+    }
+    private void gestionarJuegoModo2(){
+        //Carga preguntas durante un periodo de tiempo
+        isOn=true; //Inicio el juego
         cargarPregunta();
     }
 
@@ -85,6 +112,7 @@ public class GameActivity extends AppCompatActivity {
             boolean continuar=false;
 
             if (respuesta == null) { //Si no hay respuesta, es que se ha acabado el tiempo
+                preguntasIncorrectas++;
                 pintarBoton(preguntaActual.getOpcionGanadora(), "green");
                 TextView resultado= findViewById(R.id.resultadoPreguntaView);
                 resultado.setText(getString(R.string.game_finTiempo));
@@ -93,7 +121,7 @@ public class GameActivity extends AppCompatActivity {
             }
             else { //Si hay respuesta, compruebo si es correcta o no
                 if (respuesta.equals(preguntaActual.getOpcionGanadora())) { //Respuesta correcta
-                    //Sumo puntuacion
+                    preguntasCorrectas++;
                     continuar=true;
                     TextView resultado= findViewById(R.id.resultadoPreguntaView);
                     resultado.setText(getString(R.string.game_resultadoCorrecto));
@@ -101,6 +129,7 @@ public class GameActivity extends AppCompatActivity {
                     resultado.setVisibility(View.VISIBLE);
                 } else { //Respuesta incorrecta
                     //Pinto de rojo el mio, pinto de verde el bueno
+                    preguntasIncorrectas++;
                     pintarBoton(respuesta, "red");
                     //Dependiendo del modo de juego, resto puntuacion
                     TextView resultado= findViewById(R.id.resultadoPreguntaView);
@@ -109,6 +138,7 @@ public class GameActivity extends AppCompatActivity {
                     resultado.setVisibility(View.VISIBLE);
                 }
             }
+            actualizarPuntuacion();
             gestionarFinDelJuego(continuar);
         }
 
@@ -120,7 +150,12 @@ public class GameActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    gestionarJuego();
+                    if (modo==1){
+                        gestionarJuegoModo1();
+                    }
+                    if (modo==2){
+                        gestionarJuegoModo2();
+                    }
                 }
              },3000);
         }
@@ -143,21 +178,21 @@ public class GameActivity extends AppCompatActivity {
         Button buttonA= findViewById(R.id.buttonRespuestaA);
         buttonA.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                contadorPregunta.cancel();
+                if (modo==1) {contadorPregunta.cancel();}
                 gestionarRespuesta("A");
             }
         });
         Button buttonB= findViewById(R.id.buttonRespuestaB);
         buttonB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                contadorPregunta.cancel();
+                if (modo==1) {contadorPregunta.cancel();}
                 gestionarRespuesta("B");
             }
         });
         Button buttonC= findViewById(R.id.buttonRespuestaC);
         buttonC.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                contadorPregunta.cancel();
+                if (modo==1) {contadorPregunta.cancel();}
                 gestionarRespuesta("C");
             }
         });
@@ -234,4 +269,23 @@ public class GameActivity extends AppCompatActivity {
             gestionarRespuesta(null);
         }
     }
+    private void actualizarPuntuacion(){
+        //Actualiza el layout de la puntuacion
+        String puntuacion="0";
+        if (modo==1){ //Si es el primer modo de juego, puntuacion = numero respuestas correctas
+            puntuacion=String.valueOf(preguntasCorrectas);
+        }
+        ((TextView)findViewById(R.id.puntuacionTextView)).setText(puntuacion);
+    }
+    public void finish(){
+        //Reimplementacion del metodo finish para enviar los resultados del juego
+        Intent intent=new Intent();
+        //Devuelvo los resultados del juego y el modo
+        intent.putExtra("preguntasCorrectas", preguntasCorrectas);
+        intent.putExtra("preguntasIncorrectas", preguntasIncorrectas);
+        intent.putExtra("modo",modo);
+        setResult(RESULT_OK, intent);
+        super.finish();
+    }
+
 }
