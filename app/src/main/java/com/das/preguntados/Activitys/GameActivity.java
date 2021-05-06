@@ -28,10 +28,15 @@ public class GameActivity extends AppCompatActivity {
     boolean isOn=true;
     Pregunta preguntaActual; //Guarda la pregunta que se está mostrando
     Contador contadorPregunta; //Guarda el contador con el tiempo para responder a la pregunta
+    private long tiempoActual;
     int modo; //Modo de juego
 
     private int preguntasCorrectas;
     private int preguntasIncorrectas;
+
+    private int racha; //Indica la racha de preguntas correctas consecutivas
+    private int puntuacion; //Indica la puntuacion (nunca menor que 0)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,13 +72,16 @@ public class GameActivity extends AppCompatActivity {
         //Metodo principal encargado de gestionar el inicio del juego con el modo 2
 
         //Se inicializa el tiempo para responder las preguntas(100 segundos)
-        contadorPregunta= new Contador(100*1000,1000);
-        contadorPregunta.start();
+        puntuacion=0;
+        racha=0;
+        tiempoActual=60*1000; //Tiempo inicial 100 segundos
         gestionarJuegoModo2();
     }
     private void gestionarJuegoModo2(){
         //Carga preguntas durante un periodo de tiempo
         isOn=true; //Inicio el juego
+        contadorPregunta= new Contador(tiempoActual,1000);
+        contadorPregunta.start();
         cargarPregunta();
     }
 
@@ -82,6 +90,7 @@ public class GameActivity extends AppCompatActivity {
         preguntaActual= ColeccionPreguntas.obtenerMiColeccion().obtenerPreguntaAlAzar();
         if (preguntaActual!=null){
             //Cargo los datos de la pregunta en los distintos elementos del layout
+            ((TextView)findViewById(R.id.rachaTextView)).setVisibility(View.GONE);
             ((TextView)findViewById(R.id.resultadoPreguntaView)).setVisibility(View.GONE);
             ((TextView)findViewById(R.id.categoryTextView)).setText(preguntaActual.getGeneroPregunta());
             ((TextView)findViewById(R.id.preguntaTextView)).setText(preguntaActual.getTextoPregunta());
@@ -127,6 +136,10 @@ public class GameActivity extends AppCompatActivity {
                     resultado.setText(getString(R.string.game_resultadoCorrecto));
                     resultado.setTextColor(Color.GREEN);
                     resultado.setVisibility(View.VISIBLE);
+                    if (modo==2){ //Gestiona la puntuacion para el modo 2
+                        racha++; //Aumento la racha
+                        puntuacion=puntuacion+(10*racha);
+                    }
                 } else { //Respuesta incorrecta
                     //Pinto de rojo el mio, pinto de verde el bueno
                     preguntasIncorrectas++;
@@ -136,6 +149,19 @@ public class GameActivity extends AppCompatActivity {
                     resultado.setText(getString(R.string.game_resultadoIncorrecto));
                     resultado.setTextColor(Color.RED);
                     resultado.setVisibility(View.VISIBLE);
+                    //Si el modo de juego es 2, no termina el juego
+                    if (modo==2){
+                        continuar=true;
+                        //Gestion de la puntuacion
+                        racha=0; //Reseteo la racha
+                        //Resto 10 a la puntuacion si es posible
+                        if (puntuacion>=10){
+                            puntuacion=puntuacion-10;
+                        }
+                        else{ //Si es menor que 10, directamente pongo 0
+                            puntuacion=0;
+                        }
+                    }
                 }
             }
             actualizarPuntuacion();
@@ -178,21 +204,21 @@ public class GameActivity extends AppCompatActivity {
         Button buttonA= findViewById(R.id.buttonRespuestaA);
         buttonA.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (modo==1) {contadorPregunta.cancel();}
+                contadorPregunta.cancel();
                 gestionarRespuesta("A");
             }
         });
         Button buttonB= findViewById(R.id.buttonRespuestaB);
         buttonB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (modo==1) {contadorPregunta.cancel();}
+                contadorPregunta.cancel();
                 gestionarRespuesta("B");
             }
         });
         Button buttonC= findViewById(R.id.buttonRespuestaC);
         buttonC.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (modo==1) {contadorPregunta.cancel();}
+                contadorPregunta.cancel();
                 gestionarRespuesta("C");
             }
         });
@@ -250,6 +276,33 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    private void actualizarPuntuacion(){
+        //Actualiza el layout de la puntuacion
+        String puntuacionLayout="0";
+        if (modo==1){ //Si es el primer modo de juego, puntuacion = numero respuestas correctas
+            puntuacionLayout=String.valueOf(preguntasCorrectas);
+        }
+        if (modo==2){
+            puntuacionLayout=String.valueOf(puntuacion);
+        }
+        ((TextView)findViewById(R.id.puntuacionTextView)).setText(puntuacionLayout);
+        //Si llevas una racha, muestras al lado del layout durante el tiempo que esperas
+        if (racha>1){
+            TextView rachaTextView= findViewById(R.id.rachaTextView);
+            rachaTextView.setText("x"+racha);
+            rachaTextView.setVisibility(View.VISIBLE);
+        }
+    }
+    public void finish(){
+        //Reimplementacion del metodo finish para enviar los resultados del juego
+        Intent intent=new Intent();
+        //Devuelvo los resultados del juego y el modo
+        intent.putExtra("preguntasCorrectas", preguntasCorrectas);
+        intent.putExtra("preguntasIncorrectas", preguntasIncorrectas);
+        intent.putExtra("modo",modo);
+        setResult(RESULT_OK, intent);
+        super.finish();
+    }
 
 
     private class Contador extends CountDownTimer {
@@ -261,6 +314,7 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public void onTick(long l) {
             ((TextView)findViewById(R.id.timeTextView)).setText(l / 1000 +"''" );
+            tiempoActual=l; //Guardamos el tiempo actual para recuperarlo
         }
 
         @Override
@@ -268,24 +322,6 @@ public class GameActivity extends AppCompatActivity {
             //Se ha acabado el tiempo, no ha respondido nada
             gestionarRespuesta(null);
         }
-    }
-    private void actualizarPuntuacion(){
-        //Actualiza el layout de la puntuacion
-        String puntuacion="0";
-        if (modo==1){ //Si es el primer modo de juego, puntuacion = numero respuestas correctas
-            puntuacion=String.valueOf(preguntasCorrectas);
-        }
-        ((TextView)findViewById(R.id.puntuacionTextView)).setText(puntuacion);
-    }
-    public void finish(){
-        //Reimplementacion del metodo finish para enviar los resultados del juego
-        Intent intent=new Intent();
-        //Devuelvo los resultados del juego y el modo
-        intent.putExtra("preguntasCorrectas", preguntasCorrectas);
-        intent.putExtra("preguntasIncorrectas", preguntasIncorrectas);
-        intent.putExtra("modo",modo);
-        setResult(RESULT_OK, intent);
-        super.finish();
     }
 
 }

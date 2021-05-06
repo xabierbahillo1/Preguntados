@@ -33,6 +33,19 @@
         app:layout_constraintVertical_bias="0.482" />
 
     <TextView
+        android:id="@+id/rachaTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="104dp"
+        android:rotation="24"
+        android:rotationY="21"
+        android:text="x2"
+        android:textColor="#F39100"
+        app:layout_constraintEnd_toStartOf="@+id/categoryTextView"
+        app:layout_constraintStart_toStartOf="@+id/puntuacionTextView"
+        app:layout_constraintTop_toBottomOf="@+id/puntuacionTextView" />
+
+    <TextView
         android:id="@+id/categoryTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
