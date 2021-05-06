@@ -2,10 +2,11 @@ package com.das.preguntados.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
-import com.das.preguntados.GameSelectorActivity;
 import com.das.preguntados.R;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -31,8 +32,32 @@ public class MainMenuActivity extends AppCompatActivity {
         if (extras!= null){
             usuario=extras.getString("usuario");
         }
-        Intent i = new Intent(getApplicationContext(), GameSelectorActivity.class);
-        startActivity(i);
 
+        // Funcionalidad de los botones
+        ImageButton btnJugar = findViewById(R.id.btnJugar);
+        btnJugar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        Button btnRanking = findViewById(R.id.btnRanking);
+        btnRanking.setText(R.string.btnRanking);
+        btnRanking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        Button btnPerfil = findViewById(R.id.btnPerfil);
+        btnPerfil.setText(R.string.btnPerfil);
+        btnPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

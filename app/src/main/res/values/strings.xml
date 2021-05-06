@@ -31,4 +31,6 @@
     <string name="game_finTiempo">Fin del tiempo</string>
     <string name="game_resultadoCorrecto">Correcto</string>
     <string name="game_resultadoIncorrecto">Incorrecto</string>
+    <string name="btnRanking">Ranking</string>
+    <string name="btnPerfil">Perfil</string>
 </resources>
