@@ -2,6 +2,7 @@ package com.das.preguntados.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +39,8 @@ public class MainMenuActivity extends AppCompatActivity {
         btnJugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getApplicationContext(), GameSelectorActivity.class);
+                startActivity(i);
             }
         });
 

@@ -1,4 +1,4 @@
-package com.das.preguntados;
+package com.das.preguntados.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import com.das.preguntados.Activitys.GameActivity;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
+import com.das.preguntados.R;
 import com.das.preguntados.WS.obtenerPreguntasWS;
 
 public class GameSelectorActivity extends AppCompatActivity {
