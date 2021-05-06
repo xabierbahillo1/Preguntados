@@ -52,7 +52,7 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         Button btnPerfil = findViewById(R.id.btnPerfil);
-        btnPerfil.setText(R.string.btnEditarPerfil);
+        btnPerfil.setText(R.string.btnPerfil);
         btnPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
