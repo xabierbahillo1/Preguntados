@@ -48,8 +48,11 @@ public class GameActivity extends AppCompatActivity {
             Log.d("gameActivity","Modo de juego= "+modo);
         }
         gestionarEventosBotones();
+        //Inicializo los datos del juego
         preguntasCorrectas=0;
         preguntasIncorrectas=0;
+        puntuacion=0;
+        racha=0;
         if (modo==1){
             gestionarJuegoModo1();
         }
@@ -72,8 +75,6 @@ public class GameActivity extends AppCompatActivity {
         //Metodo principal encargado de gestionar el inicio del juego con el modo 2
 
         //Se inicializa el tiempo para responder las preguntas(100 segundos)
-        puntuacion=0;
-        racha=0;
         tiempoActual=60*1000; //Tiempo inicial 100 segundos
         gestionarJuegoModo2();
     }
@@ -297,6 +298,7 @@ public class GameActivity extends AppCompatActivity {
         //Reimplementacion del metodo finish para enviar los resultados del juego
         Intent intent=new Intent();
         //Devuelvo los resultados del juego y el modo
+        intent.putExtra("puntuacion", puntuacion);
         intent.putExtra("preguntasCorrectas", preguntasCorrectas);
         intent.putExtra("preguntasIncorrectas", preguntasIncorrectas);
         intent.putExtra("modo",modo);

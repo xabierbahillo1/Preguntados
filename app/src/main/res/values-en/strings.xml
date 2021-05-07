@@ -32,4 +32,17 @@
     <string name="game_finTiempo">End of time</string>
     <string name="game_resultadoCorrecto">Correct</string>
     <string name="game_resultadoIncorrecto">Wrong</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="finjuego_title">END GAME!!</string>
+    <string name="finjuego_continuar">CONTINUE</string>
+    <string name="finjuego_puntuacionText1">Score:</string>
+    <string name="finjuego_puntuacionText2">points</string>
+    <string name="finjuego_respuestaCorrecta">correct answer</string>
+    <string name="finjuego_respuestasCorrectas">correct answers</string>
+    <string name="finjuego_respuestaIncorrecta">wrong answer</string>
+    <string name="finjuego_respuestasIncorrectas">wrong answers</string>
+    <string name="finjuego1_noAciertos">You haven\'t got any questions right</string>
+    <string name="finJuego1_respuestaCorrecta">You got a question right!!</string>
+    <string name="finJuego1_respuestasCorrectas1">You got</string>
+    <string name="finJuego1_respuestasCorrectas2">questions right!!</string>
 </resources>
