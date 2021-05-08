@@ -22,8 +22,8 @@ public class GameActivity extends AppCompatActivity {
     /*ACTIVIDAD QUE GESTIONA EL JUEGO
     LAS PREGUNTAS YA ESTAN CARGADAS EN LA MAE COLECCIONPREGUNTAS
     Modo 1: Consiste en acertar el mayor número de preguntas posibles
-    TODO: Habra que pasarle el modo de juego a esta actividad, y esta actividad cuando termine devolver datos del juego.
-     Hacer algun metodo para que cuando pulse atras avise que se finalizará el juego y no se guardarán estadisticas*/
+    Modo 2: Consiste en responder preguntas durante 1 minuto
+    TODO: Hacer algun metodo para que cuando pulse atras avise que se finalizará el juego y no se guardarán estadisticas*/
 
     boolean isOn=true;
     Pregunta preguntaActual; //Guarda la pregunta que se está mostrando
@@ -115,7 +115,6 @@ public class GameActivity extends AppCompatActivity {
 
     private void gestionarRespuesta(String respuesta){
         //Recibe como parametro la respuesta del usuario. Se encarga de pintar si es respuesta correcta o no, y decidir si continuar el juego o finalizarlo
-        /*TODO: Habria que hacer algo para almacenar el numero de preguntas acertadas o una puntuacion desde aqui*/
         if (isOn) { //Si no está el juego parado (evitar volver a pulsar el boton dos veces)
             isOn = false; //Paro el juego
             pintarBoton(preguntaActual.getOpcionGanadora(), "green"); //Pinto la respuesta correcta
