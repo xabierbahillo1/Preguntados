@@ -76,6 +76,7 @@ public class GameSelectorActivity extends AppCompatActivity {
                                 //Inicia el juego con el modo introducido
                                 Intent i = new Intent(getApplicationContext(), GameActivity.class);
                                 i.putExtra("modo",modo);
+                                i.putExtra("guardarPartida",true); //Se guarda la partida
                                 startActivityForResult(i,100);
                             }
                         }
@@ -93,34 +94,34 @@ public class GameSelectorActivity extends AppCompatActivity {
             int preguntasCorrectas = data.getIntExtra("preguntasCorrectas",0);
             int preguntasIncorrectas = data.getIntExtra("preguntasIncorrectas",0);
             int modo= data.getIntExtra("modo",0);
-            if (modo==0){
-                Log.d("modo","No se ha recibido ningun modo, revisar GameActivity");
-            }
-            else { //Modo correcto
-                //Envio los datos de la partida a Base de datos
-                usuario="xabier"; //TODO: Aun no está implementado el enviar el usuario a esta actividad
-                Data datos = new Data.Builder()
-                        .putString("usuario",usuario)
-                        .putInt("modo",modo)
-                        .putInt("puntuacion",puntuacion)
-                        .putInt("preguntasCorrectas",preguntasCorrectas)
-                        .putInt("preguntasIncorrectas",preguntasIncorrectas)
-                        .build();
-                OneTimeWorkRequest registrarDatosPartidaOtwr= new OneTimeWorkRequest.Builder(registrarDatosPartidaWS.class).setInputData(datos)
-                        .build();
-                WorkManager.getInstance(getApplicationContext()).enqueue(registrarDatosPartidaOtwr);
+            boolean guardarPartida= data.getBooleanExtra("guardarPartida",false);
+            if (guardarPartida) { //Si esta activada la variable guardarPartida
+                if (modo == 0) {
+                    Log.d("modo", "No se ha recibido ningun modo, revisar GameActivity");
+                } else { //Modo correcto
+                    //Envio los datos de la partida a Base de datos
+                    usuario = "xabier"; //TODO: Aun no está implementado el enviar el usuario a esta actividad
+                    Data datos = new Data.Builder()
+                            .putString("usuario", usuario)
+                            .putInt("modo", modo)
+                            .putInt("puntuacion", puntuacion)
+                            .putInt("preguntasCorrectas", preguntasCorrectas)
+                            .putInt("preguntasIncorrectas", preguntasIncorrectas)
+                            .build();
+                    OneTimeWorkRequest registrarDatosPartidaOtwr = new OneTimeWorkRequest.Builder(registrarDatosPartidaWS.class).setInputData(datos)
+                            .build();
+                    WorkManager.getInstance(getApplicationContext()).enqueue(registrarDatosPartidaOtwr);
 
-                //Muestro el dialog fin de juego
-                if (modo==1){ //Dialog Modo de juego 1
-                    DialogoFinJuego1Fragment dialogoFinJuego = new DialogoFinJuego1Fragment(preguntasCorrectas);
-                    dialogoFinJuego.show(getSupportFragmentManager(),"DialogoFinJuego1");
-                }
-                else if (modo==2){ //Dialog Modo de juego 2
-                    DialogoFinJuego2Fragment dialogoFinJuego = new DialogoFinJuego2Fragment(puntuacion,preguntasCorrectas,preguntasIncorrectas);
-                    dialogoFinJuego.show(getSupportFragmentManager(),"DialogoFinJuego2");
+                    //Muestro el dialog fin de juego
+                    if (modo == 1) { //Dialog Modo de juego 1
+                        DialogoFinJuego1Fragment dialogoFinJuego = new DialogoFinJuego1Fragment(preguntasCorrectas);
+                        dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego1");
+                    } else if (modo == 2) { //Dialog Modo de juego 2
+                        DialogoFinJuego2Fragment dialogoFinJuego = new DialogoFinJuego2Fragment(puntuacion, preguntasCorrectas, preguntasIncorrectas);
+                        dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego2");
+                    }
                 }
             }
-
 
         }
     }

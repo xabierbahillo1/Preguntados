@@ -9,31 +9,35 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
+import com.das.preguntados.Dialogs.DialogoSalirJuegoFragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.GameManager.Pregunta;
 import com.das.preguntados.R;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
     /*ACTIVIDAD QUE GESTIONA EL JUEGO
     LAS PREGUNTAS YA ESTAN CARGADAS EN LA MAE COLECCIONPREGUNTAS
     Modo 1: Consiste en acertar el mayor número de preguntas posibles
-    Modo 2: Consiste en responder preguntas durante 1 minuto
-    TODO: Hacer algun metodo para que cuando pulse atras avise que se finalizará el juego y no se guardarán estadisticas*/
+    Modo 2: Consiste en responder preguntas durante 1 minuto*/
 
     boolean isOn=true;
     Pregunta preguntaActual; //Guarda la pregunta que se está mostrando
     Contador contadorPregunta; //Guarda el contador con el tiempo para responder a la pregunta
     private long tiempoActual;
+
+    private boolean guardarPartida; //Indica si guardar la partida o no
     int modo; //Modo de juego
 
-    private int preguntasCorrectas;
-    private int preguntasIncorrectas;
-
+    private int preguntasCorrectas; //Contador preguntas correctas
+    private int preguntasIncorrectas; //Contador preguntas incorrectas
     private int racha; //Indica la racha de preguntas correctas consecutivas
     private int puntuacion; //Indica la puntuacion (nunca menor que 0)
 
@@ -45,7 +49,9 @@ public class GameActivity extends AppCompatActivity {
         Bundle extras= getIntent().getExtras();
         if (extras!= null){
             modo=extras.getInt("modo");
+            guardarPartida=extras.getBoolean("guardarPartida");
             Log.d("gameActivity","Modo de juego= "+modo);
+            Log.d("gameActivity","Guardar partida= "+guardarPartida);
         }
         gestionarEventosBotones();
         //Inicializo los datos del juego
@@ -75,13 +81,13 @@ public class GameActivity extends AppCompatActivity {
         //Metodo principal encargado de gestionar el inicio del juego con el modo 2
 
         //Se inicializa el tiempo para responder las preguntas(100 segundos)
-        tiempoActual=60*1000; //Tiempo inicial 100 segundos
+        tiempoActual=60*1000; //Tiempo inicial 60 segundos
         gestionarJuegoModo2();
     }
     private void gestionarJuegoModo2(){
         //Carga preguntas durante un periodo de tiempo
         isOn=true; //Inicio el juego
-        contadorPregunta= new Contador(tiempoActual,1000);
+        contadorPregunta= new Contador(tiempoActual,250); //Simula un resume del contador, intervalo menor para guardar el tiempo mas exacto
         contadorPregunta.start();
         cargarPregunta();
     }
@@ -105,9 +111,10 @@ public class GameActivity extends AppCompatActivity {
             botonC.setBackground(getDrawable(R.drawable.boton_redondeado_gris));
             botonC.setText(preguntaActual.getTextoOpcionC());
         }
-        else{
+        else{ //No quedan preguntas, se finaliza el juego
             Log.d("cargarPregunta","Se han acabado las preguntas");
-            /*TODO: Mostrar una alerta o algo indicando que no quedan preguntas */
+            //Muestro un toast indicando que no quedan preguntas
+            Toast.makeText(this,getString(R.string.toast_noPreguntas),Toast.LENGTH_LONG).show();
             contadorPregunta.cancel(); //Cancelo el contador
             finish(); //Finalizo la actividad
         }
@@ -121,7 +128,9 @@ public class GameActivity extends AppCompatActivity {
             boolean continuar=false;
 
             if (respuesta == null) { //Si no hay respuesta, es que se ha acabado el tiempo
-                preguntasIncorrectas++;
+                if (modo==1){ //Si es el modo de juego 1, se da como incorrecta
+                    preguntasIncorrectas++;
+                }
                 pintarBoton(preguntaActual.getOpcionGanadora(), "green");
                 TextView resultado= findViewById(R.id.resultadoPreguntaView);
                 resultado.setText(getString(R.string.game_finTiempo));
@@ -293,6 +302,17 @@ public class GameActivity extends AppCompatActivity {
             rachaTextView.setVisibility(View.VISIBLE);
         }
     }
+
+    public void onBackPressed(){
+        DialogoSalirJuegoFragment dialogoSalirJuego = new DialogoSalirJuegoFragment();
+        dialogoSalirJuego.show(getSupportFragmentManager(), "DialogoSalirJuego");
+    }
+
+    public void abandonarJuego(){
+        //Metodo para abandonar la partida
+        guardarPartida=false; //Indico que no se guarda la partida
+        finish(); //Finalizo la actividad
+    }
     public void finish(){
         //Reimplementacion del metodo finish para enviar los resultados del juego
         Intent intent=new Intent();
@@ -301,6 +321,7 @@ public class GameActivity extends AppCompatActivity {
         intent.putExtra("preguntasCorrectas", preguntasCorrectas);
         intent.putExtra("preguntasIncorrectas", preguntasIncorrectas);
         intent.putExtra("modo",modo);
+        intent.putExtra("guardarPartida",guardarPartida);
         setResult(RESULT_OK, intent);
         super.finish();
     }

@@ -45,4 +45,9 @@
     <string name="finJuego1_respuestaCorrecta">You got a question right!!</string>
     <string name="finJuego1_respuestasCorrectas1">You got</string>
     <string name="finJuego1_respuestasCorrectas2">questions right!!</string>
+    <string name="toast_noPreguntas">Questions are over !!</string>
+    <string name="salir_juego_title">Attention!</string>
+    <string name="salir_juego_text">Do you really want to leave the game?</string>
+    <string name="salir_juego_cancelar">Cancel</string>
+    <string name="salir_juego_aceptar">Leave</string>
 </resources>
