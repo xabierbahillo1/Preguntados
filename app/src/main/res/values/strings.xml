@@ -50,4 +50,17 @@
     <string name="salir_juego_text">¿Realmente quieres abandonar la partida?</string>
     <string name="salir_juego_cancelar">Cancelar</string>
     <string name="salir_juego_aceptar">Abandonar</string>
+    <string name="opcion_Deporte">DEPORTE</string>
+    <string name="opcion_Arte">ARTE</string>
+    <string name="opcion_Geografia">GEOGRAFIA</string>
+    <string name="opcion_Historia">HISTORIA</string>
+    <string name="opcion_Ciencia">CIENCIA</string>
+    <string name="opcion_Entretenimiento">ENTRETENIMIENTO</string>
+    <string name="ajustes_resetear">Por defecto</string>
+    <string name="alert_btnCancelar">Cancelar</string>
+    <string name="alert_btnGuardar">Guardar</string>
+    <string name="ajustes_Title">Categorias de las preguntas</string>
+    <string name="ajustes_Aviso">¡Atención! No se guardarán las estadisticas de las partidas personalizadas</string>
+    <string name="ajustes_NoSeleccion">No se ha seleccionado ninguna pregunta. No se guardarán los ajustes</string>
+    <string name="ajustes_guardados">Se han guardado los ajustes!!</string>
 </resources>

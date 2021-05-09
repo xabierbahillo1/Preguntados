@@ -1,6 +1,7 @@
 package com.das.preguntados.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -12,8 +13,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.das.preguntados.Dialogs.DialogAjustesJuego;
+import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
 import com.das.preguntados.Dialogs.DialogoFinJuego2Fragment;
+import com.das.preguntados.Dialogs.DialogoSalirJuegoFragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.obtenerPreguntasWS;
@@ -21,11 +25,13 @@ import com.das.preguntados.WS.registrarDatosPartidaWS;
 
 import java.util.Locale;
 
-public class GameSelectorActivity extends AppCompatActivity {
+public class GameSelectorActivity extends AppCompatActivity implements DialogAjustesJuego.ListenerDialogoAjustesJuego {
     /*
         ACTIVIDAD PARA ELEGIR EL MODO DE JUEGO A JUGAR
      */
     private String usuario; //Referencia al usuario que ha iniciado sesion
+    private boolean[] opciones={true,true,true,true,true,true}; //Preguntas: {DEPORTE,ARTE,GEOGRAFIA,HISTORIA,CIENCIA,ENTRETENIMIENTO}
+    private String opcionesString=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +55,15 @@ public class GameSelectorActivity extends AppCompatActivity {
                 iniciarJuego(2);
             }
         });
+        Button ajustes= findViewById(R.id.buttonAjusteJuego);
+        ajustes.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Se lanza dialog para seleccionar las opciones
+                DialogFragment dialogoOpciones= DialogAjustesJuego.newInstance(opciones);
+                dialogoOpciones.setCancelable(false);
+                dialogoOpciones.show(getSupportFragmentManager(), "dialogoOpciones");
+            }
+        });
     }
 
     private void iniciarJuego(int modo){
@@ -61,6 +76,7 @@ public class GameSelectorActivity extends AppCompatActivity {
         //Carga las preguntas desde la base de datos en ColeccionPreguntas
         Data datos = new Data.Builder()
                 .putString("idioma",idioma)
+                .putString("genero",opcionesString)
                 .build();
 
         OneTimeWorkRequest obtenerPreguntasOtwr= new OneTimeWorkRequest.Builder(obtenerPreguntasWS.class).setInputData(datos)
@@ -76,7 +92,12 @@ public class GameSelectorActivity extends AppCompatActivity {
                                 //Inicia el juego con el modo introducido
                                 Intent i = new Intent(getApplicationContext(), GameActivity.class);
                                 i.putExtra("modo",modo);
-                                i.putExtra("guardarPartida",true); //Se guarda la partida
+                                if (opcionesString==null){ //Si modo estandar
+                                    i.putExtra("guardarPartida",true); //Se guarda la partida
+                                }
+                                else { //Si es modo personalizado
+                                    i.putExtra("guardarPartida",false); //No guarda la partida
+                                }
                                 startActivityForResult(i,100);
                             }
                         }
@@ -124,5 +145,11 @@ public class GameSelectorActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    @Override
+    public void guardarNuevosAjustes(boolean[] seleccion, String seleccionString) {
+        opciones=seleccion;
+        opcionesString=seleccionString;
     }
 }

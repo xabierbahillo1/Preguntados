@@ -50,4 +50,17 @@
     <string name="salir_juego_text">Do you really want to leave the game?</string>
     <string name="salir_juego_cancelar">Cancel</string>
     <string name="salir_juego_aceptar">Leave</string>
+    <string name="opcion_Deporte">SPORT</string>
+    <string name="opcion_Arte">ART</string>
+    <string name="opcion_Geografia">GEOGRAPHY</string>
+    <string name="opcion_Historia">HISTORY</string>
+    <string name="opcion_Ciencia">SCIENCE</string>
+    <string name="opcion_Entretenimiento">ENTERTAINMENT</string>
+    <string name="ajustes_resetear">Default</string>
+    <string name="alert_btnCancelar">Cancel</string>
+    <string name="alert_btnGuardar">Save</string>
+    <string name="ajustes_Title">Question categories</string>
+    <string name="ajustes_Aviso">Attention! Statistics for custom games will not be saved</string>
+    <string name="ajustes_NoSeleccion">No question has been selected. Settings will not be saved</string>
+    <string name="ajustes_guardados">The settings have been saved!</string>
 </resources>
