@@ -33,4 +33,7 @@
     <string name="game_resultadoIncorrecto">Incorrecto</string>
     <string name="btnRanking">Ranking</string>
     <string name="btnPerfil">Perfil</string>
+    <string name="textCancelarEditarPerfil">¿Quieres cancelar la edición del perfil?</string>
+    <string name="textSi">Sí</string>
+    <string name="textNo">No</string>
 </resources>
