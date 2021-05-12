@@ -7,17 +7,21 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
+
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.das.preguntados.Dialogs.DialogAjustesJuego;
-import com.das.preguntados.Dialogs.DialogMessage;
+
 import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
 import com.das.preguntados.Dialogs.DialogoFinJuego2Fragment;
-import com.das.preguntados.Dialogs.DialogoSalirJuegoFragment;
+
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.obtenerPreguntasWS;
@@ -53,6 +57,16 @@ public class GameSelectorActivity extends AppCompatActivity implements DialogAju
             public void onClick(View v) {
                 //Se lanza actividad con modo 1
                 iniciarJuego(2);
+            }
+        });
+        Button duelo= findViewById(R.id.buttonModoDuelo);
+        duelo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Se lanza actividad de salas
+                Intent i = new Intent(getApplicationContext(), RoomActivity.class);
+                i.putExtra("usuario",usuario);
+                i.putExtra("genero",opcionesString);
+                startActivity(i);
             }
         });
         Button ajustes= findViewById(R.id.buttonAjusteJuego);
@@ -121,7 +135,6 @@ public class GameSelectorActivity extends AppCompatActivity implements DialogAju
                     Log.d("modo", "No se ha recibido ningun modo, revisar GameActivity");
                 } else { //Modo correcto
                     //Envio los datos de la partida a Base de datos
-                    usuario = "xabier"; //TODO: Aun no está implementado el enviar el usuario a esta actividad
                     Data datos = new Data.Builder()
                             .putString("usuario", usuario)
                             .putInt("modo", modo)

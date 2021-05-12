@@ -9,14 +9,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
 import com.das.preguntados.Dialogs.DialogoSalirJuegoFragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.GameManager.Pregunta;

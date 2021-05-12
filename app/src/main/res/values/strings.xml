@@ -63,4 +63,9 @@
     <string name="ajustes_Aviso">¡Atención! No se guardarán las estadisticas de las partidas personalizadas</string>
     <string name="ajustes_NoSeleccion">No se ha seleccionado ninguna pregunta. No se guardarán los ajustes</string>
     <string name="ajustes_guardados">Se han guardado los ajustes!!</string>
+    <string name="mensaje_noSalas">Aun no hay ninguna sala creada!</string>
+    <string name="salas_title">SALAS</string>
+    <string name="salas_noPreguntas">Error al obtener las preguntas. No se creará la sala</string>
+    <string name="salas_alertTitle">Error al crear la sala</string>
+    <string name="duelo_waitOponent">Esperando al oponente...</string>
 </resources>

@@ -63,4 +63,9 @@
     <string name="ajustes_Aviso">Attention! Statistics for custom games will not be saved</string>
     <string name="ajustes_NoSeleccion">No question has been selected. Settings will not be saved</string>
     <string name="ajustes_guardados">The settings have been saved!</string>
+    <string name="mensaje_noSalas">There is no room created yet!</string>
+    <string name="salas_title">ROOMS</string>
+    <string name="salas_noPreguntas">Failed to get the questions. The room will not be created</string>
+    <string name="salas_alertTitle">Failed to create room</string>
+    <string name="duelo_waitOponent">Waiting for the opponent ...</string>
 </resources>

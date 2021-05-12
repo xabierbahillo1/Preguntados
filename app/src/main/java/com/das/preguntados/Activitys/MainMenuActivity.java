@@ -31,6 +31,7 @@ public class MainMenuActivity extends AppCompatActivity {
             usuario=extras.getString("usuario");
         }
         Intent i = new Intent(getApplicationContext(), GameSelectorActivity.class);
+        i.putExtra("usuario",usuario);
         startActivity(i);
 
     }
