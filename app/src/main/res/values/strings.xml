@@ -71,4 +71,12 @@
     <string name="salas_crearSala">CREAR SALA</string>
     <string name="duelo_turnoDe">Turno de</string>
     <string name="duelo_miturno">Es tu turno</string>
+    <string name="duelo_victoriaTitle">Victoria!!</string>
+    <string name="duelo_derrotaTitle">Derrota!!</string>
+    <string name="duelo_abandonoYo">Has abandonado la partida</string>
+    <string name="duelo_abandonaEl1">El jugador</string>
+    <string name="duelo_abandonaEl2">ha abandonado la partida</string>
+    <string name="duelo_derrota1">El jugador</string>
+    <string name="duelo_derrota2">te ha ganado</string>
+    <string name="duelo_victoria">Has ganado al jugador</string>
 </resources>

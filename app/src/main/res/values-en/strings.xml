@@ -70,5 +70,13 @@
     <string name="duelo_waitOponent">Waiting for the opponent ...</string>
     <string name="salas_crearSala">CREATE ROOM</string>
     <string name="duelo_turnoDe">Turn:</string>
-    <string name="duelo_miturno">Is your turn</string>
+    <string name="duelo_miturno">It\'s your turn</string>
+    <string name="duelo_victoriaTitle">Victory!!</string>
+    <string name="duelo_derrotaTitle">Defeat!</string>
+    <string name="duelo_abandonoYo">You have abandoned the game</string>
+    <string name="duelo_abandonaEl1">Player</string>
+    <string name="duelo_abandonaEl2">has left the game</string>
+    <string name="duelo_derrota1">Player</string>
+    <string name="duelo_derrota2">has beaten you</string>
+    <string name="duelo_victoria">You have won the player</string>
 </resources>

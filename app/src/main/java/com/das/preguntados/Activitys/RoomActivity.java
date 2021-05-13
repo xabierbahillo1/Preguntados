@@ -22,9 +22,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.das.preguntados.Dialogs.DialogMessage;
+import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
+import com.das.preguntados.Dialogs.DialogoFinJuego2Fragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.obtenerPreguntasWS;
+import com.das.preguntados.WS.registrarDatosPartidaWS;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -113,7 +116,7 @@ public class RoomActivity extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(), DueloActivity.class);
                     i.putExtra("roomName", roomName);
                     i.putExtra("usuario", usuario);
-                    startActivity(i);
+                    startActivityForResult(i,101);
                 }
                 //Borro el eventListener
                 roomRef.removeEventListener(listener);
@@ -216,7 +219,7 @@ public class RoomActivity extends AppCompatActivity {
                                 Intent i = new Intent(getApplicationContext(),DueloActivity.class);
                                 i.putExtra("roomName",roomName);
                                 i.putExtra("usuario",usuario);
-                                startActivity(i);
+                                startActivityForResult(i,102);
                             }
                             else{ //No se han podido cargar las preguntas, destruyo la sala
                                 DatabaseReference eliminar= database.getReference("salas");
@@ -232,5 +235,105 @@ public class RoomActivity extends AppCompatActivity {
         WorkManager.getInstance(getApplicationContext()).enqueue(obtenerPreguntasOtwr);
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Ha finalizado un ActivityForResult, recupero la informacion
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && (requestCode == 101 || requestCode ==102)) { //Si ha finalizado correctamente la actividad Duelo
+            boolean esperandoGuest = data.getBooleanExtra("esperandoGuest",true);
+            if (!esperandoGuest){ //Si no estaba esperando al guest (ha comenzado la partida)
+                String guest=data.getStringExtra("guest");
+                boolean abandonoYo=data.getBooleanExtra("abandonoYo",false);
+                boolean abandonaEl=data.getBooleanExtra("abandonaEl",false);
+                int aciertosHost= data.getIntExtra("aciertosHost",0);
+                int aciertosGuest= data.getIntExtra("aciertosGuest",0);
+                String roomName= data.getStringExtra("roomName");
+                String role= data.getStringExtra("role");
+                String ganador="";
+                String el="";
+
+                if (role.equals("Host")){
+                    el=guest;
+                }
+                else{
+                    el=roomName;
+                }
+
+                if (abandonoYo){
+                    ganador=guest;
+                    lanzarMensajeFinJuego(getString(R.string.duelo_derrotaTitle),getString(R.string.duelo_abandonoYo));
+                }
+                else if (abandonaEl){
+                    ganador=usuario;
+                    lanzarMensajeFinJuego(getString(R.string.duelo_victoriaTitle),getString(R.string.duelo_abandonaEl1)+" "+el+" "+getString(R.string.duelo_abandonaEl2));
+                }
+                else{
+                    //El ganador es quien mas aciertos tiene
+                    if (aciertosHost>aciertosGuest){ //Gana host
+                        if (role.equals("Host")){ //Gano yo
+                            ganador=usuario;
+                        }
+                        else{ //Gana el
+                            ganador=roomName;
+                        }
+                    }
+                    else{ //Gana guest
+                        if (role.equals("Guest")){ //Gano yo
+                            ganador=usuario;
+                        }
+                        else{ //Gana el
+                            ganador=guest;
+                        }
+                    }
+
+                    if (ganador.equals(usuario)){ //He ganado
+                        lanzarMensajeFinJuego(getString(R.string.duelo_victoriaTitle),getString(R.string.duelo_victoria)+" "+el);
+                    }
+                    else{
+                        lanzarMensajeFinJuego(getString(R.string.duelo_derrotaTitle),getString(R.string.duelo_derrota1)+" "+el+" "+getString(R.string.duelo_derrota2));
+                    }
+
+                    //El host envia los datos a la base de datos
+                }
+            }
+            int puntuacion = data.getIntExtra("puntuacion",0);
+            int preguntasCorrectas = data.getIntExtra("preguntasCorrectas",0);
+            int preguntasIncorrectas = data.getIntExtra("preguntasIncorrectas",0);
+            int modo= data.getIntExtra("modo",0);
+            boolean guardarPartida= data.getBooleanExtra("guardarPartida",false);
+            if (guardarPartida) { //Si esta activada la variable guardarPartida
+                if (modo == 0) {
+                    Log.d("modo", "No se ha recibido ningun modo, revisar GameActivity");
+                } else { //Modo correcto
+                    //Envio los datos de la partida a Base de datos
+                    Data datos = new Data.Builder()
+                            .putString("usuario", usuario)
+                            .putInt("modo", modo)
+                            .putInt("puntuacion", puntuacion)
+                            .putInt("preguntasCorrectas", preguntasCorrectas)
+                            .putInt("preguntasIncorrectas", preguntasIncorrectas)
+                            .build();
+                    OneTimeWorkRequest registrarDatosPartidaOtwr = new OneTimeWorkRequest.Builder(registrarDatosPartidaWS.class).setInputData(datos)
+                            .build();
+                    WorkManager.getInstance(getApplicationContext()).enqueue(registrarDatosPartidaOtwr);
+
+                    //Muestro el dialog fin de juego
+                    if (modo == 1) { //Dialog Modo de juego 1
+                        DialogoFinJuego1Fragment dialogoFinJuego = new DialogoFinJuego1Fragment(preguntasCorrectas);
+                        dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego1");
+                    } else if (modo == 2) { //Dialog Modo de juego 2
+                        DialogoFinJuego2Fragment dialogoFinJuego = new DialogoFinJuego2Fragment(puntuacion, preguntasCorrectas, preguntasIncorrectas);
+                        dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego2");
+                    }
+                }
+            }
+
+        }
+    }
+
+    private void lanzarMensajeFinJuego(String titulo, String mensaje){
+        //Lanza la actividad que muestra el mensaje fin del juego
+        DialogFragment dialogoFin= DialogMessage.newInstance(titulo,mensaje);
+        dialogoFin.show(getSupportFragmentManager(), "finJuego");
+    }
 }
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -27,8 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DueloActivity extends AppCompatActivity implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
     //Actividad que gestiona el duelo entre dos jugadores HOST y GUEST
-    /*TODO: Alert indicando el resultado del duelo
-     */
 
     private String usuario; //Referencia al usuario que ha iniciado sesion
     private String roomName; //Nombre de la sala
@@ -48,6 +47,7 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
     private int aciertosGuest=0;
 
     private boolean isOn;
+
     Pregunta preguntaActual; //Guarda la pregunta que se está mostrando
 
     String textoPreguntaActual=""; //Guarda la pregunta actual en formato texto (para el guest)
@@ -56,6 +56,9 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
 
     private String turno;
 
+    //Booleanos para gestionar los abandonos
+    private boolean abandonoYo = false;
+    private boolean abandonaEl = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +145,10 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
                     if (snapshot.getKey().equals("finish")){ //Fin del juego
                         finish();
                     }
-                    if (snapshot.getKey().equals("abandonar")){ //Abandono
+                    if (snapshot.getKey().equals("abandonar")){ //Alguien ha abandonado
+                        if (!abandonoYo){ //Si no he abandonado yo, ha sido el otro jugador
+                            abandonaEl=true;
+                        }
                         contadorPregunta.cancel();
                         finish();
                     }
@@ -228,7 +234,13 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
             ((TextView)findViewById(R.id.turnoText)).setText(getString(R.string.duelo_miturno));
         }
         else{ //turno del contrario
-            ((TextView)findViewById(R.id.turnoText)).setText(getString(R.string.duelo_turnoDe)+" "+nombreGuest);
+            if (role.equals("Host")){
+                ((TextView)findViewById(R.id.turnoText)).setText(getString(R.string.duelo_turnoDe)+" "+nombreGuest);
+            }
+            else{
+                ((TextView)findViewById(R.id.turnoText)).setText(getString(R.string.duelo_turnoDe)+" "+roomName);
+            }
+
         }
 
         //Limpio la respuesta del turno anterior
@@ -407,6 +419,18 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
 
     public void finish() {
         //Reimplementacion del metodo finish
+        Intent intent=new Intent();
+        //Devuelvo los resultados del juego
+        intent.putExtra("esperandoGuest", esperandoGuest);
+        if (!esperandoGuest){ //Si ha empezado la partida, envio el resto de datos
+            intent.putExtra("guest",nombreGuest);
+            intent.putExtra("abandonoYo",abandonoYo);
+            intent.putExtra("abandonaEl",abandonaEl);
+            intent.putExtra("aciertosHost",aciertosHost);
+            intent.putExtra("aciertosGuest",aciertosGuest);
+            intent.putExtra("roomName",roomName);
+            intent.putExtra("role",role);
+        }
 
         if (role.equals("Host")) {
             //Si es host, destruyo la sala y finalizo la actividad
@@ -414,6 +438,7 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
             eliminar.child(roomName).removeValue(); //Limpio la sala xabier
         }
         roomRef.removeEventListener(listener);//Dejo de escuchar
+        setResult(RESULT_OK, intent);
         super.finish();
     }
 
@@ -426,6 +451,7 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
     public void abandonarJuego() {
         //Marco abandono y se gestiona desde la propia bd
         roomRef.child("abandonar").setValue("true");
+        abandonoYo=true;
     }
 
     private class Contador extends CountDownTimer {
