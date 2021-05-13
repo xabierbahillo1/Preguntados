@@ -1,10 +1,20 @@
 package com.das.preguntados.WS;
+
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
+import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import com.das.preguntados.GameManager.ColeccionPreguntas;
+import com.das.preguntados.GameManager.Pregunta;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -13,21 +23,17 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class iniciarSesionWS extends Worker {
-    /*WEBSERVICE para iniciar sesion en la aplicacion
-        Es necesario pasar como parametros: Usuario, Clave y Token de autenticacion
-        Respuesta: CODIGO#VALOR
-            CODIGO: ERR -> Error, OK -> Login correcto
-            VALOR: En el caso de error, referencia para obtener el string en strings.xml
-     */
-    public iniciarSesionWS(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+public class obtenerDatosUsuarioWS extends Worker {
+
+    public obtenerDatosUsuarioWS(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/obtenerDatosUsuario.php";
+        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/obtenerPreguntas.php";
+
         HttpURLConnection urlConnection = null;
         try {
             URL destino = new URL(direccion);
@@ -38,11 +44,9 @@ public class iniciarSesionWS extends Worker {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-            //Paso los datos del usuario y token como parametro
+            //Paso los datos del usuario a registrar como parametro
             String usuario= getInputData().getString("usuario");
-            String clave = getInputData().getString("clave");
-            String token=getInputData().getString("token");
-            String parametros = "usuario="+usuario+"&clave="+clave+"&token="+token;
+            String parametros = "usuario="+usuario;
             out.print(parametros);
             out.close();
             int statusCode = urlConnection.getResponseCode();
@@ -55,7 +59,13 @@ public class iniciarSesionWS extends Worker {
                     result += line;
                 }
                 inputStream.close();
-                //Devuelvo la respuesta para tratarla desde LoginActivity
+                //Trato la respuesta
+                if (result.contains("ERR#")){ //Tiene un error
+                    Log.d("obtenerPreguntas",result.split("#")[1]);
+                    return ListenableWorker.Result.failure();
+                }
+                //Obtengo el JSON con las preguntas
+
                 Data resultados = new Data.Builder()
                         .putString("resultado",result)
                         .build();
@@ -67,5 +77,4 @@ public class iniciarSesionWS extends Worker {
         }
         return null;
     }
-
 }
