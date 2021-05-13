@@ -45,7 +45,7 @@
         android:background="@drawable/boton_redondeado_gris"
         android:paddingLeft="80dp"
         android:paddingRight="80dp"
-        android:text="CREAR SALA" />
+        android:text="@string/salas_crearSala" />
 
     <TextView
         android:id="@+id/roomsTitle"

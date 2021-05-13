@@ -58,7 +58,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="355dp"
+        android:layout_height="375dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +94,15 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/boton_redondeado_gris"
             android:text="RESPUESTA C" />
+
+        <TextView
+            android:id="@+id/turnoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="Turno de:"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

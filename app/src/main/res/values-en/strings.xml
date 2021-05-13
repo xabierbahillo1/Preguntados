@@ -68,4 +68,7 @@
     <string name="salas_noPreguntas">Failed to get the questions. The room will not be created</string>
     <string name="salas_alertTitle">Failed to create room</string>
     <string name="duelo_waitOponent">Waiting for the opponent ...</string>
+    <string name="salas_crearSala">CREATE ROOM</string>
+    <string name="duelo_turnoDe">Turn:</string>
+    <string name="duelo_miturno">Is your turn</string>
 </resources>

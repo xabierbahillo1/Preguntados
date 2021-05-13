@@ -231,34 +231,6 @@ public class RoomActivity extends AppCompatActivity {
                 });
         WorkManager.getInstance(getApplicationContext()).enqueue(obtenerPreguntasOtwr);
     }
+
 }
 
-
-
-/* METODO PROGRESSDIALOG (seguramente mostrarlo en la actividad duelo)
-https://www.youtube.com/watch?v=nj-trslVFPc
-https://www.youtube.com/watch?v=lGZ-hIzei9I
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setIcon(R.mipmap.ic_launcher);
-        progressDialog.setMessage("Cargando...");
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-            public void onCancel(DialogInterface dialog) {
-
-                Log.i("inside on cancel","Cancel Called");
-                finish(); //If you want to finish the activity.
-            }
-        });
-        progressDialog.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.dismiss();
-            }
-        },3000);
-
-
- //Para eliminar la sala (ya vere cuando lo uso)
-        DatabaseReference eliminar= database.getReference("salas");
-        eliminar.child("xabier").removeValue(); //Limpio la sala xabier
- */

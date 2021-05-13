@@ -68,4 +68,7 @@
     <string name="salas_noPreguntas">Error al obtener las preguntas. No se creará la sala</string>
     <string name="salas_alertTitle">Error al crear la sala</string>
     <string name="duelo_waitOponent">Esperando al oponente...</string>
+    <string name="salas_crearSala">CREAR SALA</string>
+    <string name="duelo_turnoDe">Turno de</string>
+    <string name="duelo_miturno">Es tu turno</string>
 </resources>

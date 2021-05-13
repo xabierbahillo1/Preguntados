@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.das.preguntados.Dialogs.DialogoSalirJuegoFragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.GameManager.Pregunta;
 import com.das.preguntados.R;
@@ -25,14 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class DueloActivity extends AppCompatActivity {
-    //Actividad que gestiona el duelo entre dos jugadores
-    //HOST: Es el encargado de obtener las preguntas y enviarlas a la base de datos para que la reciba el guest
-    //GUEST: Unicamente recoge los datos recibidos en la base de datos
+public class DueloActivity extends AppCompatActivity implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
+    //Actividad que gestiona el duelo entre dos jugadores HOST y GUEST
     /*TODO: Alert indicando el resultado del duelo
-            Permitir rendirte pulsando el botón Atras
-            Mostrar de quien es el turno
      */
+
     private String usuario; //Referencia al usuario que ha iniciado sesion
     private String roomName; //Nombre de la sala
     private String role; //Rol en la sala
@@ -40,12 +37,13 @@ public class DueloActivity extends AppCompatActivity {
     //Atributos de la base de datos
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://preguntados-2f25f-default-rtdb.europe-west1.firebasedatabase.app/"); //Instancia a base de datos
     private DatabaseReference roomRef;
-
     private ValueEventListener listener;
 
-    private boolean esperandoGuest=false;
-    private ProgressDialog progressDialog;
+    private String nombreGuest; //Nombre del usuario que se une a la partida
+    private boolean esperandoGuest=false; //Indica si se esta esperando al guest
+    private ProgressDialog progressDialog; //Dialogo esperando a guest
 
+    //Variables resultado partida
     private int aciertosHost=0;
     private int aciertosGuest=0;
 
@@ -57,6 +55,7 @@ public class DueloActivity extends AppCompatActivity {
     Contador contadorPregunta; //Guarda el contador con el tiempo para responder a la pregunta
 
     private String turno;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +81,7 @@ public class DueloActivity extends AppCompatActivity {
             findViewById(R.id.preguntaTextView).setVisibility(View.GONE);
             findViewById(R.id.timeTextView).setVisibility(View.GONE);
             findViewById(R.id.categoryTextView).setVisibility(View.GONE);
-
+            findViewById(R.id.turnoText).setVisibility(View.GONE);
             //Si es host, muestro el progressDialog hasta que aparezca un guest
             progressDialog = new ProgressDialog(this);
             progressDialog.setIcon(R.mipmap.ic_launcher);
@@ -119,6 +118,7 @@ public class DueloActivity extends AppCompatActivity {
                 Iterable<DataSnapshot> data= dataSnapshot.getChildren();
                 for(DataSnapshot snapshot: data) { //Compruebo los datos en BD
                     if (esperandoGuest && snapshot.getKey().equals("guest")){ //Si estoy esperando al guest y se conecta
+                        nombreGuest=snapshot.getValue(String.class);
                         esperandoGuest=false;
                         progressDialog.dismiss();
                         comenzarJuego();
@@ -142,6 +142,10 @@ public class DueloActivity extends AppCompatActivity {
                     if (snapshot.getKey().equals("finish")){ //Fin del juego
                         finish();
                     }
+                    if (snapshot.getKey().equals("abandonar")){ //Abandono
+                        contadorPregunta.cancel();
+                        finish();
+                    }
                 }
             }
 
@@ -159,6 +163,7 @@ public class DueloActivity extends AppCompatActivity {
         findViewById(R.id.preguntaTextView).setVisibility(View.VISIBLE);
         findViewById(R.id.timeTextView).setVisibility(View.VISIBLE);
         findViewById(R.id.categoryTextView).setVisibility(View.VISIBLE);
+        findViewById(R.id.turnoText).setVisibility(View.VISIBLE);
         aciertosHost=0;
         aciertosGuest=0;
 
@@ -218,6 +223,14 @@ public class DueloActivity extends AppCompatActivity {
         else if (turno.equals("Guest")){
             turno="Host";
         }
+        //Muestro el turno
+        if (turno.equals(role)){ //Es tu turno
+            ((TextView)findViewById(R.id.turnoText)).setText(getString(R.string.duelo_miturno));
+        }
+        else{ //turno del contrario
+            ((TextView)findViewById(R.id.turnoText)).setText(getString(R.string.duelo_turnoDe)+" "+nombreGuest);
+        }
+
         //Limpio la respuesta del turno anterior
         roomRef.child("respuesta").removeValue();
     }
@@ -400,7 +413,19 @@ public class DueloActivity extends AppCompatActivity {
             DatabaseReference eliminar = database.getReference("salas");
             eliminar.child(roomName).removeValue(); //Limpio la sala xabier
         }
+        roomRef.removeEventListener(listener);//Dejo de escuchar
         super.finish();
+    }
+
+    public void onBackPressed(){
+        DialogoSalirJuegoFragment dialogoSalirJuego = new DialogoSalirJuegoFragment();
+        dialogoSalirJuego.show(getSupportFragmentManager(), "DialogoSalirJuego");
+    }
+
+    @Override
+    public void abandonarJuego() {
+        //Marco abandono y se gestiona desde la propia bd
+        roomRef.child("abandonar").setValue("true");
     }
 
     private class Contador extends CountDownTimer {
