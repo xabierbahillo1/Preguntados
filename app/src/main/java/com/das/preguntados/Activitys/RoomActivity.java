@@ -1,7 +1,7 @@
 package com.das.preguntados.Activitys;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
@@ -12,14 +12,13 @@ import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
@@ -27,24 +26,20 @@ import com.das.preguntados.Dialogs.DialogoFinJuego2Fragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.obtenerPreguntasWS;
+import com.das.preguntados.WS.registrarDatosDueloWS;
 import com.das.preguntados.WS.registrarDatosPartidaWS;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class RoomActivity extends AppCompatActivity {
     //Actividad para mostrar y crear salas de duelo
@@ -238,7 +233,7 @@ public class RoomActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Ha finalizado un ActivityForResult, recupero la informacion
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && (requestCode == 101 || requestCode ==102)) { //Si ha finalizado correctamente la actividad Duelo
+        if (resultCode == RESULT_OK && (requestCode == 101 || requestCode ==102)) { //Si ha finalizado correctamente la actividad Duelo (identificadores 101 o 102)
             boolean esperandoGuest = data.getBooleanExtra("esperandoGuest",true);
             if (!esperandoGuest){ //Si no estaba esperando al guest (ha comenzado la partida)
                 String guest=data.getStringExtra("guest");
@@ -249,15 +244,15 @@ public class RoomActivity extends AppCompatActivity {
                 String roomName= data.getStringExtra("roomName");
                 String role= data.getStringExtra("role");
                 String ganador="";
+                //Obtengo el nombre del otro jugador
                 String el="";
-
                 if (role.equals("Host")){
                     el=guest;
                 }
                 else{
                     el=roomName;
                 }
-
+                //Compruebo abandonos
                 if (abandonoYo){
                     ganador=guest;
                     lanzarMensajeFinJuego(getString(R.string.duelo_derrotaTitle),getString(R.string.duelo_abandonoYo));
@@ -266,7 +261,7 @@ public class RoomActivity extends AppCompatActivity {
                     ganador=usuario;
                     lanzarMensajeFinJuego(getString(R.string.duelo_victoriaTitle),getString(R.string.duelo_abandonaEl1)+" "+el+" "+getString(R.string.duelo_abandonaEl2));
                 }
-                else{
+                else{ //La partida ha finalizo, obtengo ganador y envio los datos a la base de datos
                     //El ganador es quien mas aciertos tiene
                     if (aciertosHost>aciertosGuest){ //Gana host
                         if (role.equals("Host")){ //Gano yo
@@ -293,6 +288,18 @@ public class RoomActivity extends AppCompatActivity {
                     }
 
                     //El host envia los datos a la base de datos
+                    if (role.equals("Host")){
+                        Data datos = new Data.Builder()
+                                .putString("host", usuario) //El host soy yo
+                                .putString("guest", guest)
+                                .putInt("aciertosHost", aciertosHost)
+                                .putInt("aciertosGuest", aciertosGuest)
+                                .putString("ganador", ganador)
+                                .build();
+                        OneTimeWorkRequest registrarDatosDueloOtwr = new OneTimeWorkRequest.Builder(registrarDatosDueloWS.class).setInputData(datos)
+                                .build();
+                        WorkManager.getInstance(getApplicationContext()).enqueue(registrarDatosDueloOtwr);
+                    }
                 }
             }
             int puntuacion = data.getIntExtra("puntuacion",0);

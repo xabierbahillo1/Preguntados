@@ -13,20 +13,20 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class registrarDatosPartidaWS extends Worker {
+public class registrarDatosDueloWS extends Worker {
     /*WEBSERVICE para registrar una partida en la base de datos
         Respuesta: CODIGO#VALOR
             CODIGO: ERR -> Error, OK -> Partida guardada
             VALOR: En el caso de error, literal con el error para imprimir por los logs
      */
-    public registrarDatosPartidaWS(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public registrarDatosDueloWS(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/registrarDatosPartida.php";
+        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/registrarDuelo.php";
 
         HttpURLConnection urlConnection = null;
         try {
@@ -38,16 +38,14 @@ public class registrarDatosPartidaWS extends Worker {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-            //Paso los datos de la partida como parametro
-            String usuario= getInputData().getString("usuario");
-            int modo=getInputData().getInt("modo",0);
-            int puntuacion=getInputData().getInt("puntuacion",0);
-            int preguntasCorrectas=getInputData().getInt("preguntasCorrectas",0);
-            int preguntasIncorrectas=getInputData().getInt("preguntasIncorrectas",0);
-            if (modo!=0){ //Si el modo es correcto, se pasan los datos como parametro
-                String parametros = "usuario="+usuario+"&modo="+modo+"&puntuacion="+puntuacion+"&preguntasCorrectas="+preguntasCorrectas+"&preguntasIncorrectas="+preguntasIncorrectas;
-                out.print(parametros);
-            }
+            //Paso los datos del duelo como parametro
+            String host= getInputData().getString("host");
+            String guest= getInputData().getString("guest");
+            int aciertosHost=getInputData().getInt("aciertosHost",0);
+            int aciertosGuest=getInputData().getInt("aciertosGuest",0);
+            String ganador = getInputData().getString("ganador");
+            String parametros = "host="+host+"&guest="+guest+"&aciertosHost="+aciertosHost+"&aciertosGuest="+aciertosGuest+"&ganador="+ganador;
+            out.print(parametros);
             out.close();
             int statusCode = urlConnection.getResponseCode();
             if (statusCode == 200) { //Si 200 OK
@@ -59,9 +57,9 @@ public class registrarDatosPartidaWS extends Worker {
                     result += line;
                 }
                 inputStream.close();
-                //Imprimo la respuesta en los logs
+                //Imprimo la respuesta por los logs
                 String[] resultado=result.split("#");
-                Log.d("registrarDatosPartida"+resultado[0],resultado[1]);
+                Log.d("registrarDatosDuelo"+resultado[0],resultado[1]);
                 return Result.success();
             }
         }
