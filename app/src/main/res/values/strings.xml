@@ -33,7 +33,6 @@
     <string name="game_resultadoIncorrecto">Incorrecto</string>
     <string name="btnRanking">Ranking</string>
     <string name="btnPerfil">Perfil</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="finjuego_title">FIN DEL JUEGO!!</string>
     <string name="finjuego_continuar">CONTINUAR</string>
