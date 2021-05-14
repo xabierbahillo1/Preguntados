@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Common.generateAuthToken;
 import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.R;
@@ -26,7 +27,7 @@ import com.das.preguntados.WS.registroWS;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegistroActivity extends AppCompatActivity {
+public class RegistroActivity extends ActivityVertical {
     /*PANTALLA DE REGISTRO. Permite al usuario registrar un usuario en el sistema y pasar a MainMenuActivity
    o pasar a la actividad LoginActivity para hacer login con un usuario existente
     */

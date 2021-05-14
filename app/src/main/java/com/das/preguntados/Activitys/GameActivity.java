@@ -15,12 +15,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Dialogs.DialogoSalirJuegoFragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.GameManager.Pregunta;
 import com.das.preguntados.R;
 
-public class GameActivity extends AppCompatActivity implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
+public class GameActivity extends ActivityVertical implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
     /*ACTIVIDAD QUE GESTIONA EL JUEGO
     LAS PREGUNTAS YA ESTAN CARGADAS EN LA MAE COLECCIONPREGUNTAS
     Modo 1: Consiste en acertar el mayor número de preguntas posibles

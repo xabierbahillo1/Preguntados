@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Dialogs.DialogAjustesJuego;
 
 import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
@@ -28,7 +29,7 @@ import com.das.preguntados.WS.registrarDatosPartidaWS;
 
 import java.util.Locale;
 
-public class GameSelectorActivity extends AppCompatActivity implements DialogAjustesJuego.ListenerDialogoAjustesJuego {
+public class GameSelectorActivity extends ActivityVertical implements DialogAjustesJuego.ListenerDialogoAjustesJuego {
     /*
         ACTIVIDAD PARA ELEGIR EL MODO DE JUEGO A JUGAR
      */

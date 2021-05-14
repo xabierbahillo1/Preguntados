@@ -8,9 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.R;
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MainMenuActivity extends ActivityVertical {
     /*
            MENU PRINCIPAL:
             - ACCEDER A LA ACTIVIDAD SELECCION DE MODO DE JUEGO
