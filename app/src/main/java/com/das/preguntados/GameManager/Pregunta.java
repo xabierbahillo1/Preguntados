@@ -39,4 +39,9 @@ public class Pregunta {
     public String getOpcionGanadora(){
         return opcionGanadora;
     }
+
+    public String generarStringPregunta(){
+        //Genera el String con los datos de la pregunta separados por ;
+        return getGeneroPregunta()+";"+getTextoPregunta()+";"+getTextoOpcionA()+";"+getTextoOpcionB()+";"+getTextoOpcionC()+";"+getOpcionGanadora();
+    }
 }

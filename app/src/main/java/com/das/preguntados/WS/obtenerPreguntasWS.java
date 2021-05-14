@@ -19,6 +19,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class obtenerPreguntasWS extends Worker {
     /*WEBSERVICE para obtener las preguntas de la aplicacion
@@ -54,9 +57,6 @@ public class obtenerPreguntasWS extends Worker {
             String clave= getInputData().getString("clave");
             String token=getInputData().getString("token");
             String parametros = "idioma="+idioma;
-            if (genero!=null){
-                parametros+="&genero="+genero;
-            }
             out.print(parametros);
             out.close();
             int statusCode = urlConnection.getResponseCode();
@@ -80,6 +80,12 @@ public class obtenerPreguntasWS extends Worker {
                 //Obtengo la lista de preguntas y la reseteo
                 ColeccionPreguntas misPreguntas= ColeccionPreguntas.obtenerMiColeccion();
                 misPreguntas.resetear();
+                //Obtengo los generos a filtrar
+                List<String> arrayGeneros=null;
+                if (genero!=null){
+                    String[] generos=genero.split(",");
+                    arrayGeneros = new ArrayList<String>(Arrays.asList(generos));
+                }
                 //Cargo los datos del JSON en la lista de preguntas
                 for (int i=0;i<json.size();i++) { //Recorro el json
                     JSONObject dataJson= (JSONObject) json.get(i);
@@ -89,7 +95,10 @@ public class obtenerPreguntasWS extends Worker {
                     String textoOpcionB=(String) dataJson.get("textoOpcionB");
                     String textoOpcionC=(String) dataJson.get("textoOpcionC");
                     String opcionGanadora=(String) dataJson.get("opcionGanadora");
-                    misPreguntas.anadirPregunta(new Pregunta(generoP,texto,textoOpcionA,textoOpcionB,textoOpcionC,opcionGanadora));
+                    if (arrayGeneros==null || arrayGeneros.contains(generoP)){
+                        misPreguntas.anadirPregunta(new Pregunta(generoP,texto,textoOpcionA,textoOpcionB,textoOpcionC,opcionGanadora));
+                    }
+
                 }
                 return Result.success();
             }

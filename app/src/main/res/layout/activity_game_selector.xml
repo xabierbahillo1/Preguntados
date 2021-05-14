@@ -7,8 +7,8 @@
     tools:context=".Activitys.GameSelectorActivity">
 
     <LinearLayout
-        android:layout_width="398dp"
-        android:layout_height="252dp"
+        android:layout_width="392dp"
+        android:layout_height="377dp"
         android:layout_centerInParent="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,5 +34,24 @@
             android:layout_marginTop="50dp"
             android:layout_marginRight="30dp"
             android:text="MODO 2" />
+
+        <Button
+            android:id="@+id/buttonModoDuelo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="30dp"
+            android:text="DUELO" />
+
+        <Button
+            android:id="@+id/buttonAjusteJuego"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="30dp"
+            android:text="AJUSTES DEL JUEGO" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

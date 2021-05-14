@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activitys.GameSelectorActivity"></activity>
+        <activity android:name=".Activitys.DueloActivity"></activity>
+        <activity android:name=".Activitys.RoomActivity" />
+        <activity android:name=".Activitys.GameSelectorActivity" />
         <activity android:name=".Activitys.GameActivity" />
         <activity
             android:name=".Activitys.SplashActivity"
