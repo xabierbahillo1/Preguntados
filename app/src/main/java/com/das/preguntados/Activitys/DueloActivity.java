@@ -189,10 +189,19 @@ public class DueloActivity extends ActivityVertical implements DialogoSalirJuego
         if (role.equals("Host")){ //Si es host, obtengo la pregunta desde la clase
             preguntaActual= ColeccionPreguntas.obtenerMiColeccion().obtenerPreguntaAlAzar();
             //Subo la pregunta a la base de datos
-            String preguntaBD=preguntaActual.generarStringPregunta();
-            roomRef.child("pregunta").setValue(preguntaBD); //Guardo la pregunta en la base de datos
+            if (preguntaActual!=null){ //Subo la pregunta
+                String preguntaBD=preguntaActual.generarStringPregunta();
+                roomRef.child("pregunta").setValue(preguntaBD); //Guardo la pregunta en la base de datos
+            }
+            else{ //No quedan preguntas, se finaliza el juego
+                Log.d("cargarPregunta","Se han acabado las preguntas");
+                //Muestro un toast indicando que no quedan preguntas
+                Toast.makeText(this,getString(R.string.toast_noPreguntas),Toast.LENGTH_LONG).show();
+                contadorPregunta.cancel(); //Cancelo el contador
+                roomRef.child("finish").setValue("true"); //Informo de que se finaliza la partida
+                finish(); //Finalizo la actividad
+            }
         }
-
         //Si es guest, ya deberia tener la pregunta
         if (preguntaActual!=null){
             //Cargo los datos de la pregunta en los distintos elementos del layout
@@ -208,14 +217,6 @@ public class DueloActivity extends ActivityVertical implements DialogoSalirJuego
             Button botonC=findViewById(R.id.buttonRespuestaC);
             botonC.setBackground(getDrawable(R.drawable.boton_redondeado_gris));
             botonC.setText(preguntaActual.getTextoOpcionC());
-
-        }
-        else{ //No quedan preguntas, se finaliza el juego //TODO: Hay que pensarlo mejor
-            Log.d("cargarPregunta","Se han acabado las preguntas");
-            //Muestro un toast indicando que no quedan preguntas
-            Toast.makeText(this,getString(R.string.toast_noPreguntas),Toast.LENGTH_LONG).show();
-            contadorPregunta.cancel(); //Cancelo el contador
-            finish(); //Finalizo la actividad
         }
     }
     private void gestionarTurno(){

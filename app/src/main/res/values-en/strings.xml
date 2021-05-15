@@ -81,4 +81,6 @@
     <string name="duelo_derrota1">Player</string>
     <string name="duelo_derrota2">has beaten you</string>
     <string name="duelo_victoria">You have won the player</string>
+    <string name="duelo_empateText">You tied with</string>
+    <string name="duelo_empateTitle">Tie!!!</string>
 </resources>

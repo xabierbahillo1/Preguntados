@@ -272,6 +272,9 @@ public class RoomActivity extends ActivityVertical {
                             ganador=roomName;
                         }
                     }
+                    else if (aciertosHost==aciertosGuest){ //Empate
+                        ganador="Empate";
+                    }
                     else{ //Gana guest
                         if (role.equals("Guest")){ //Gano yo
                             ganador=usuario;
@@ -284,7 +287,10 @@ public class RoomActivity extends ActivityVertical {
                     if (ganador.equals(usuario)){ //He ganado
                         lanzarMensajeFinJuego(getString(R.string.duelo_victoriaTitle),getString(R.string.duelo_victoria)+" "+el);
                     }
-                    else{
+                    else if (ganador.equals("Empate")){ //Empate
+                        lanzarMensajeFinJuego(getString(R.string.duelo_empateTitle),getString(R.string.duelo_empateText)+" "+el);
+                    }
+                    else{ //He perdido
                         lanzarMensajeFinJuego(getString(R.string.duelo_derrotaTitle),getString(R.string.duelo_derrota1)+" "+el+" "+getString(R.string.duelo_derrota2));
                     }
 

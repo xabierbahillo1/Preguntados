@@ -33,6 +33,7 @@ public class GameActivity extends ActivityVertical implements DialogoSalirJuegoF
     private long tiempoActual;
 
     private boolean guardarPartida; //Indica si guardar la partida o no
+    private boolean abandono=false; //Indica si se ha abandonado la partida o no
     int modo; //Modo de juego
 
     private int preguntasCorrectas; //Contador preguntas correctas
@@ -310,6 +311,7 @@ public class GameActivity extends ActivityVertical implements DialogoSalirJuegoF
     public void abandonarJuego(){
         //Metodo para abandonar la partida
         guardarPartida=false; //Indico que no se guarda la partida
+        abandono=true; //Indico que he abandonado la partida
         finish(); //Finalizo la actividad
     }
     public void finish(){
@@ -321,6 +323,7 @@ public class GameActivity extends ActivityVertical implements DialogoSalirJuegoF
         intent.putExtra("preguntasIncorrectas", preguntasIncorrectas);
         intent.putExtra("modo",modo);
         intent.putExtra("guardarPartida",guardarPartida);
+        intent.putExtra("abandono",abandono);
         setResult(RESULT_OK, intent);
         super.finish();
     }

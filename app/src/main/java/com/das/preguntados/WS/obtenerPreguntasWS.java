@@ -53,9 +53,6 @@ public class obtenerPreguntasWS extends Worker {
             //Paso los datos del usuario a registrar como parametro
             String idioma= getInputData().getString("idioma");
             String genero= getInputData().getString("genero");
-            String usuario= getInputData().getString("usuario");
-            String clave= getInputData().getString("clave");
-            String token=getInputData().getString("token");
             String parametros = "idioma="+idioma;
             out.print(parametros);
             out.close();
