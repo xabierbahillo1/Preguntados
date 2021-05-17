@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
 import com.das.preguntados.Dialogs.DialogoFinJuego2Fragment;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class RoomActivity extends AppCompatActivity {
+public class RoomActivity extends ActivityVertical {
     //Actividad para mostrar y crear salas de duelo
 
     private String usuario; //Referencia al usuario que ha iniciado sesion
@@ -271,6 +272,9 @@ public class RoomActivity extends AppCompatActivity {
                             ganador=roomName;
                         }
                     }
+                    else if (aciertosHost==aciertosGuest){ //Empate
+                        ganador="Empate";
+                    }
                     else{ //Gana guest
                         if (role.equals("Guest")){ //Gano yo
                             ganador=usuario;
@@ -283,7 +287,10 @@ public class RoomActivity extends AppCompatActivity {
                     if (ganador.equals(usuario)){ //He ganado
                         lanzarMensajeFinJuego(getString(R.string.duelo_victoriaTitle),getString(R.string.duelo_victoria)+" "+el);
                     }
-                    else{
+                    else if (ganador.equals("Empate")){ //Empate
+                        lanzarMensajeFinJuego(getString(R.string.duelo_empateTitle),getString(R.string.duelo_empateText)+" "+el);
+                    }
+                    else{ //He perdido
                         lanzarMensajeFinJuego(getString(R.string.duelo_derrotaTitle),getString(R.string.duelo_derrota1)+" "+el+" "+getString(R.string.duelo_derrota2));
                     }
 

@@ -14,11 +14,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Common.generateAuthToken;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.comprobarTokenAuthWS;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends ActivityVertical {
     /*SPLASH SCREEN DEL INICIO DE LA APLICACION
         Mira si hay alguna sesion guardada
             - Si hay, comprueba si es correcta y envia a MainMenuActivity

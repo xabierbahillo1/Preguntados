@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -15,12 +17,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Dialogs.DialogoSalirJuegoFragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.GameManager.Pregunta;
 import com.das.preguntados.R;
 
-public class GameActivity extends AppCompatActivity implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
+public class GameActivity extends ActivityVertical implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
     /*ACTIVIDAD QUE GESTIONA EL JUEGO
     LAS PREGUNTAS YA ESTAN CARGADAS EN LA MAE COLECCIONPREGUNTAS
     Modo 1: Consiste en acertar el mayor número de preguntas posibles
@@ -32,12 +35,19 @@ public class GameActivity extends AppCompatActivity implements DialogoSalirJuego
     private long tiempoActual;
 
     private boolean guardarPartida; //Indica si guardar la partida o no
+    private boolean abandono=false; //Indica si se ha abandonado la partida o no
     int modo; //Modo de juego
 
     private int preguntasCorrectas; //Contador preguntas correctas
     private int preguntasIncorrectas; //Contador preguntas incorrectas
     private int racha; //Indica la racha de preguntas correctas consecutivas
     private int puntuacion; //Indica la puntuacion (nunca menor que 0)
+
+    //Variables efectos sonido
+    SoundPool sfx;
+    int soundAcierto;
+    int soundError;
+    int soundReloj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +63,23 @@ public class GameActivity extends AppCompatActivity implements DialogoSalirJuego
         }
         gestionarEventosBotones();
         //Inicializo los datos del juego
+
         preguntasCorrectas=0;
         preguntasIncorrectas=0;
         puntuacion=0;
         racha=0;
+
+        //Definicion objetos para SFX
+        AudioAttributes audioAttributes= new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+        sfx= new SoundPool.Builder().setMaxStreams(3).setAudioAttributes(audioAttributes).build();
+        //Cargo los tres sonidos
+        soundAcierto= sfx.load(this,R.raw.acierto,1);
+        soundError= sfx.load(this,R.raw.error,1);
+        soundReloj = sfx.load(this,R.raw.reloj,1);
+
         if (modo==1){
             gestionarJuegoModo1();
         }
@@ -128,17 +151,20 @@ public class GameActivity extends AppCompatActivity implements DialogoSalirJuego
             if (respuesta == null) { //Si no hay respuesta, es que se ha acabado el tiempo
                 if (modo==1){ //Si es el modo de juego 1, se da como incorrecta
                     preguntasIncorrectas++;
+                    sfx.play(soundError,1,1,1,0,1);
                 }
                 pintarBoton(preguntaActual.getOpcionGanadora(), "green");
                 TextView resultado= findViewById(R.id.resultadoPreguntaView);
                 resultado.setText(getString(R.string.game_finTiempo));
                 resultado.setTextColor(Color.MAGENTA);
                 resultado.setVisibility(View.VISIBLE);
+
             }
             else { //Si hay respuesta, compruebo si es correcta o no
                 if (respuesta.equals(preguntaActual.getOpcionGanadora())) { //Respuesta correcta
                     preguntasCorrectas++;
                     continuar=true;
+                    sfx.play(soundAcierto,1,1,1,0,1);
                     TextView resultado= findViewById(R.id.resultadoPreguntaView);
                     resultado.setText(getString(R.string.game_resultadoCorrecto));
                     resultado.setTextColor(Color.GREEN);
@@ -156,6 +182,7 @@ public class GameActivity extends AppCompatActivity implements DialogoSalirJuego
                     resultado.setText(getString(R.string.game_resultadoIncorrecto));
                     resultado.setTextColor(Color.RED);
                     resultado.setVisibility(View.VISIBLE);
+                    sfx.play(soundError,1,1,1,0,1);
                     //Si el modo de juego es 2, no termina el juego
                     if (modo==2){
                         continuar=true;
@@ -309,6 +336,8 @@ public class GameActivity extends AppCompatActivity implements DialogoSalirJuego
     public void abandonarJuego(){
         //Metodo para abandonar la partida
         guardarPartida=false; //Indico que no se guarda la partida
+        abandono=true; //Indico que he abandonado la partida
+        contadorPregunta.cancel(); //Cancelo el contador
         finish(); //Finalizo la actividad
     }
     public void finish(){
@@ -320,6 +349,7 @@ public class GameActivity extends AppCompatActivity implements DialogoSalirJuego
         intent.putExtra("preguntasIncorrectas", preguntasIncorrectas);
         intent.putExtra("modo",modo);
         intent.putExtra("guardarPartida",guardarPartida);
+        intent.putExtra("abandono",abandono);
         setResult(RESULT_OK, intent);
         super.finish();
     }
@@ -327,6 +357,7 @@ public class GameActivity extends AppCompatActivity implements DialogoSalirJuego
 
     private class Contador extends CountDownTimer {
         //CLASE PARA IMPLEMENTAR EL CONTADOR DE LAS PREGUNTAS. Recibe como parametros tiempo inicial y tiempo de tick, actualizando el timeTextView cada tick
+        private long segundo=0;
         public Contador(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
@@ -335,6 +366,11 @@ public class GameActivity extends AppCompatActivity implements DialogoSalirJuego
         public void onTick(long l) {
             ((TextView)findViewById(R.id.timeTextView)).setText(l / 1000 +"''" );
             tiempoActual=l; //Guardamos el tiempo actual para recuperarlo
+
+            if (l/1000<=5 && segundo!=l/1000){ //Si quedan menos de 5 segundos, reproduzco efecto de sonido
+                segundo=l/1000;
+                sfx.play(3,1,1,1,0,1);
+            }
         }
 
         @Override

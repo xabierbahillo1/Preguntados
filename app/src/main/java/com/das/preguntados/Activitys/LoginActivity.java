@@ -19,13 +19,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Common.generateAuthToken;
 import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.iniciarSesionWS;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends ActivityVertical {
     /*PANTALLA DE LOGIN. Permite al usuario iniciar sesión con un usuario registrado en el sistema y pasar a MainMenuActivity
     o pasar a la actividad RegistroActivity para registrar un usuario
      */

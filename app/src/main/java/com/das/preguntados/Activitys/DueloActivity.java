@@ -4,18 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Dialogs.DialogoSalirJuegoFragment;
 import com.das.preguntados.GameManager.ColeccionPreguntas;
 import com.das.preguntados.GameManager.Pregunta;
@@ -26,7 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class DueloActivity extends AppCompatActivity implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
+public class DueloActivity extends ActivityVertical implements DialogoSalirJuegoFragment.ListenerDialogoSalirJuego {
     //Actividad que gestiona el duelo entre dos jugadores HOST y GUEST
 
     private String usuario; //Referencia al usuario que ha iniciado sesion
@@ -60,6 +66,12 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
     private boolean abandonoYo = false;
     private boolean abandonaEl = false;
 
+    //Variables efectos sonido
+    SoundPool sfx;
+    int soundAcierto;
+    int soundError;
+    int soundReloj;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +90,18 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
                 esperandoGuest=false;
             }
         }
+
+        //Definicion objetos para SFX
+        AudioAttributes audioAttributes= new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+        sfx= new SoundPool.Builder().setMaxStreams(3).setAudioAttributes(audioAttributes).build();
+        //Cargo los tres sonidos
+        soundAcierto= sfx.load(this,R.raw.acierto,1);
+        soundError= sfx.load(this,R.raw.error,1);
+        soundReloj = sfx.load(this,R.raw.reloj,1);
+
         //Si es host Oculto campos que no quiero que se vean en un primer momento
         if (role.equals("Host")) {
             findViewById(R.id.resultadoPreguntaView).setVisibility(View.GONE);
@@ -109,6 +133,7 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
         gestionarEventosBotones();
         roomRef= database.getReference("salas/"+roomName);
         setDatabaseListener();
+
     }
 
     private void setDatabaseListener() {
@@ -188,10 +213,19 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
         if (role.equals("Host")){ //Si es host, obtengo la pregunta desde la clase
             preguntaActual= ColeccionPreguntas.obtenerMiColeccion().obtenerPreguntaAlAzar();
             //Subo la pregunta a la base de datos
-            String preguntaBD=preguntaActual.generarStringPregunta();
-            roomRef.child("pregunta").setValue(preguntaBD); //Guardo la pregunta en la base de datos
+            if (preguntaActual!=null){ //Subo la pregunta
+                String preguntaBD=preguntaActual.generarStringPregunta();
+                roomRef.child("pregunta").setValue(preguntaBD); //Guardo la pregunta en la base de datos
+            }
+            else{ //No quedan preguntas, se finaliza el juego
+                Log.d("cargarPregunta","Se han acabado las preguntas");
+                //Muestro un toast indicando que no quedan preguntas
+                Toast.makeText(this,getString(R.string.toast_noPreguntas),Toast.LENGTH_LONG).show();
+                contadorPregunta.cancel(); //Cancelo el contador
+                roomRef.child("finish").setValue("true"); //Informo de que se finaliza la partida
+                finish(); //Finalizo la actividad
+            }
         }
-
         //Si es guest, ya deberia tener la pregunta
         if (preguntaActual!=null){
             //Cargo los datos de la pregunta en los distintos elementos del layout
@@ -207,14 +241,6 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
             Button botonC=findViewById(R.id.buttonRespuestaC);
             botonC.setBackground(getDrawable(R.drawable.boton_redondeado_gris));
             botonC.setText(preguntaActual.getTextoOpcionC());
-
-        }
-        else{ //No quedan preguntas, se finaliza el juego //TODO: Hay que pensarlo mejor
-            Log.d("cargarPregunta","Se han acabado las preguntas");
-            //Muestro un toast indicando que no quedan preguntas
-            Toast.makeText(this,getString(R.string.toast_noPreguntas),Toast.LENGTH_LONG).show();
-            contadorPregunta.cancel(); //Cancelo el contador
-            finish(); //Finalizo la actividad
         }
     }
     private void gestionarTurno(){
@@ -232,6 +258,9 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
         //Muestro el turno
         if (turno.equals(role)){ //Es tu turno
             ((TextView)findViewById(R.id.turnoText)).setText(getString(R.string.duelo_miturno));
+            //Vibra para avisar que es tu turno
+            Vibrator vibrator= (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(500); //Vibra medio segundo
         }
         else{ //turno del contrario
             if (role.equals("Host")){
@@ -296,12 +325,15 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
             pintarBoton(preguntaActual.getOpcionGanadora(), "green"); //Pinto la respuesta correcta
             boolean continuar = false;
 
+
             if (respuesta.equals("timeOut")) { //Si se ha acabado el tiempo
                 pintarBoton(preguntaActual.getOpcionGanadora(), "green");
                 TextView resultado = findViewById(R.id.resultadoPreguntaView);
                 resultado.setText(getString(R.string.game_finTiempo));
                 resultado.setTextColor(Color.MAGENTA);
                 resultado.setVisibility(View.VISIBLE);
+
+                sfx.play(soundError,1,1,1,0,1);
             } else { //Si hay respuesta, compruebo si es correcta o no
                 if (respuesta.equals(preguntaActual.getOpcionGanadora())) { //Respuesta correcta
                     //Sumo 1 al turno correspondiente
@@ -316,7 +348,7 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
                     resultado.setText(getString(R.string.game_resultadoCorrecto));
                     resultado.setTextColor(Color.GREEN);
                     resultado.setVisibility(View.VISIBLE);
-
+                    sfx.play(soundAcierto,1,1,1,0,1);
                 } else { //Respuesta incorrecta
                     //Pinto de rojo el mio, pinto de verde el bueno
                     pintarBoton(respuesta, "red");
@@ -325,6 +357,7 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
                     resultado.setText(getString(R.string.game_resultadoIncorrecto));
                     resultado.setTextColor(Color.RED);
                     resultado.setVisibility(View.VISIBLE);
+                    sfx.play(soundError,1,1,1,0,1);
                 }
             }
             actualizarPuntuacion();
@@ -456,6 +489,7 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
 
     private class Contador extends CountDownTimer {
         //CLASE PARA IMPLEMENTAR EL CONTADOR DE LAS PREGUNTAS. Recibe como parametros tiempo inicial y tiempo de tick, actualizando el timeTextView cada tick
+        private long segundo=0;
         public Contador(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
@@ -463,6 +497,10 @@ public class DueloActivity extends AppCompatActivity implements DialogoSalirJueg
         @Override
         public void onTick(long l) {
             ((TextView)findViewById(R.id.timeTextView)).setText(l / 1000 +"''" );
+            if (l/1000<=5 && segundo!=l/1000){ //Si quedan menos de 5 segundos, reproduzco efecto de sonido
+                segundo=l/1000;
+                sfx.play(3,1,1,1,0,1);
+            }
         }
 
         @Override

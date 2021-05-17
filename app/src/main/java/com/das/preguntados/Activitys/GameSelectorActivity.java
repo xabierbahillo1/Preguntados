@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Dialogs.DialogAjustesJuego;
 
 import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
@@ -28,7 +29,7 @@ import com.das.preguntados.WS.registrarDatosPartidaWS;
 
 import java.util.Locale;
 
-public class GameSelectorActivity extends AppCompatActivity implements DialogAjustesJuego.ListenerDialogoAjustesJuego {
+public class GameSelectorActivity extends ActivityVertical implements DialogAjustesJuego.ListenerDialogoAjustesJuego {
     /*
         ACTIVIDAD PARA ELEGIR EL MODO DE JUEGO A JUGAR
      */
@@ -64,7 +65,7 @@ public class GameSelectorActivity extends AppCompatActivity implements DialogAju
                 //Se lanza actividad de salas
                 Intent i = new Intent(getApplicationContext(), RoomActivity.class);
                 i.putExtra("usuario",usuario);
-                i.putExtra("genero",opcionesString);
+                i.putExtra("opcionesString",opcionesString);
                 startActivity(i);
             }
         });
@@ -128,6 +129,7 @@ public class GameSelectorActivity extends AppCompatActivity implements DialogAju
             int preguntasCorrectas = data.getIntExtra("preguntasCorrectas",0);
             int preguntasIncorrectas = data.getIntExtra("preguntasIncorrectas",0);
             int modo= data.getIntExtra("modo",0);
+            boolean abandono= data.getBooleanExtra("abandono",false);
             boolean guardarPartida= data.getBooleanExtra("guardarPartida",false);
             if (guardarPartida) { //Si esta activada la variable guardarPartida
                 if (modo == 0) {
@@ -144,16 +146,15 @@ public class GameSelectorActivity extends AppCompatActivity implements DialogAju
                     OneTimeWorkRequest registrarDatosPartidaOtwr = new OneTimeWorkRequest.Builder(registrarDatosPartidaWS.class).setInputData(datos)
                             .build();
                     WorkManager.getInstance(getApplicationContext()).enqueue(registrarDatosPartidaOtwr);
-
-                    //Muestro el dialog fin de juego
-                    if (modo == 1) { //Dialog Modo de juego 1
-                        DialogoFinJuego1Fragment dialogoFinJuego = new DialogoFinJuego1Fragment(preguntasCorrectas);
-                        dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego1");
-                    } else if (modo == 2) { //Dialog Modo de juego 2
-                        DialogoFinJuego2Fragment dialogoFinJuego = new DialogoFinJuego2Fragment(puntuacion, preguntasCorrectas, preguntasIncorrectas);
-                        dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego2");
-                    }
                 }
+            }
+            //Muestro el dialog fin de juego
+            if (!abandono && modo == 1) { //Dialog Modo de juego 1
+                DialogoFinJuego1Fragment dialogoFinJuego = new DialogoFinJuego1Fragment(preguntasCorrectas);
+                dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego1");
+            } else if (!abandono && modo == 2) { //Dialog Modo de juego 2
+                DialogoFinJuego2Fragment dialogoFinJuego = new DialogoFinJuego2Fragment(puntuacion, preguntasCorrectas, preguntasIncorrectas);
+                dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego2");
             }
 
         }

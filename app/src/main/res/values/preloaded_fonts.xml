@@ -2,6 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/alfa_slab_one</item>
+        <item>@font/hanalei_fill</item>
         <item>@font/holtwood_one_sc</item>
     </array>
 </resources>

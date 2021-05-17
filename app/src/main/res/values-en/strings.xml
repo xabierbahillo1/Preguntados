@@ -85,4 +85,10 @@
     <string name="textSi">Yes</string>
     <string name="textNo">No</string>
     <string name="textCerrarSesion">Are you sure you want to log out?</string>
+    <string name="duelo_empateText">You tied with</string>
+    <string name="duelo_empateTitle">Tie!!!</string>
+    <string name="menuJuego_Contrareloj">Time trial</string>
+    <string name="menuJuego_Duelo">Duel</string>
+    <string name="menuJuego_Ajustes">Game settings</string>
+    <string name="menuJuego_Carrera">Race</string>
 </resources>
