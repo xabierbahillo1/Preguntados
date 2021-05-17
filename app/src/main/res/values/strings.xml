@@ -80,4 +80,8 @@
     <string name="duelo_derrota1">El jugador</string>
     <string name="duelo_derrota2">te ha ganado</string>
     <string name="duelo_victoria">Has ganado al jugador</string>
+    <string name="textCancelarEditarPerfil">¿Quieres cancelar la edición del perfil?</string>
+    <string name="textSi">Sí</string>
+    <string name="textNo">No</string>
+    <string name="textCerrarSesion">¿Seguro que quieres cerrar la sesión?</string>
 </resources>

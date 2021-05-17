@@ -13,21 +13,22 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class iniciarSesionWS extends Worker {
-    /*WEBSERVICE para iniciar sesion en la aplicacion
-        Es necesario pasar como parametros: Usuario, Clave y Token de autenticacion
+public class ActualizarPerfilWS extends Worker {
+    /*WEBSERVICE para registrar un usuario en la aplicación.
+        Es necesario pasar como parametros: Email, Nombre Completo, Usuario, Clave y Token de sesion
         Respuesta: CODIGO#VALOR
-            CODIGO: ERR -> Error, OK -> Login correcto
+            CODIGO: ERR -> Error, OK -> Registro realizado
             VALOR: En el caso de error, referencia para obtener el string en strings.xml
      */
-    public iniciarSesionWS(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public ActualizarPerfilWS(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/obtenerDatosUsuario.php";
+        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/registrarUsuario.php";
+
         HttpURLConnection urlConnection = null;
         try {
             URL destino = new URL(direccion);
@@ -38,28 +39,19 @@ public class iniciarSesionWS extends Worker {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-            //Paso los datos del usuario y token como parametro
+            //Paso los datos del usuario a registrar como parametro
+            String correo= getInputData().getString("email");
+            String nombrecompleto= getInputData().getString("nombre");
             String usuario= getInputData().getString("usuario");
-            String clave = getInputData().getString("clave");
-            String token=getInputData().getString("token");
-            String parametros = "usuario="+usuario+"&clave="+clave+"&token="+token;
+            String parametros = "correo="+correo+"&nombrecompleto="+nombrecompleto+"&usuario="+usuario;
             out.print(parametros);
             out.close();
+
             int statusCode = urlConnection.getResponseCode();
             if (statusCode == 200) { //Si 200 OK
                 //Obtengo la respuesta recibida
-                BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-                String line, result = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    result += line;
-                }
-                inputStream.close();
-                //Devuelvo la respuesta para tratarla desde LoginActivity
-                Data resultados = new Data.Builder()
-                        .putString("resultado",result)
-                        .build();
-                return Result.success(resultados);
+
+                return Result.success();
             }
         }
         catch (Exception e){

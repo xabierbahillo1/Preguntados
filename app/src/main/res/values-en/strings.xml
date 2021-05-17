@@ -81,4 +81,8 @@
     <string name="duelo_derrota1">Player</string>
     <string name="duelo_derrota2">has beaten you</string>
     <string name="duelo_victoria">You have won the player</string>
+    <string name="textCancelarEditarPerfil">Do you really want to cancel profile editing?</string>
+    <string name="textSi">Yes</string>
+    <string name="textNo">No</string>
+    <string name="textCerrarSesion">Are you sure you want to log out?</string>
 </resources>

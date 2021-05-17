@@ -3,6 +3,8 @@
     package="com.das.preguntados">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,9 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Activitys.DueloActivity"></activity>
         <activity android:name=".Activitys.RoomActivity" />
+        <activity android:name=".Activitys.GameSelectorActivity" />
+        <activity android:name=".Activitys.EditProfileActivity"></activity>
+        <activity android:name=".Activitys.ProfileActivity" />
         <activity android:name=".Activitys.GameSelectorActivity" />
         <activity android:name=".Activitys.GameActivity" />
         <activity
