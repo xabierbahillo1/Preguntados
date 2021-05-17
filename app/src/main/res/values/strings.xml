@@ -82,4 +82,8 @@
     <string name="duelo_victoria">Has ganado al jugador</string>
     <string name="duelo_empateTitle">Empate!!</string>
     <string name="duelo_empateText">Has empatado con</string>
+    <string name="menuJuego_Contrareloj">Contrarreloj</string>
+    <string name="menuJuego_Duelo">Duelo</string>
+    <string name="menuJuego_Ajustes">Ajustes del juego</string>
+    <string name="menuJuego_Carrera">Carrera</string>
 </resources>

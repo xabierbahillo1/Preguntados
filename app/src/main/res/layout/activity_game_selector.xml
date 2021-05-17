@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:text="MODO 1" />
+            android:background="@drawable/boton_redondeado_gris"
+            android:text="@string/menuJuego_Carrera" />
 
         <Button
             android:id="@+id/buttonModo2"
@@ -33,7 +34,8 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="50dp"
             android:layout_marginRight="30dp"
-            android:text="MODO 2" />
+            android:background="@drawable/boton_redondeado_gris"
+            android:text="@string/menuJuego_Contrareloj" />
 
         <Button
             android:id="@+id/buttonModoDuelo"
@@ -42,7 +44,8 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="50dp"
             android:layout_marginRight="30dp"
-            android:text="DUELO" />
+            android:background="@drawable/boton_redondeado_gris"
+            android:text="@string/menuJuego_Duelo" />
 
         <Button
             android:id="@+id/buttonAjusteJuego"
@@ -51,7 +54,8 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="50dp"
             android:layout_marginRight="30dp"
-            android:text="AJUSTES DEL JUEGO" />
+            android:background="@drawable/boton_redondeado_gris"
+            android:text="@string/menuJuego_Ajustes" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

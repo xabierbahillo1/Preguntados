@@ -83,4 +83,8 @@
     <string name="duelo_victoria">You have won the player</string>
     <string name="duelo_empateText">You tied with</string>
     <string name="duelo_empateTitle">Tie!!!</string>
+    <string name="menuJuego_Contrareloj">Time trial</string>
+    <string name="menuJuego_Duelo">Duel</string>
+    <string name="menuJuego_Ajustes">Game settings</string>
+    <string name="menuJuego_Carrera">Race</string>
 </resources>
