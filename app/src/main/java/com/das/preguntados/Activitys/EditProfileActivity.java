@@ -64,9 +64,6 @@ public class EditProfileActivity extends AppCompatActivity {
         EditText editTextNombre = findViewById(R.id.editTextNombre);
         editTextNombre.setText(nombre);
 
-        EditText editTextUsuario = findViewById(R.id.editTextUsuario);
-        editTextUsuario.setText(usuario);
-
         EditText editTextEmail = findViewById(R.id.editTextEmail);
         editTextEmail.setText(email);
 
