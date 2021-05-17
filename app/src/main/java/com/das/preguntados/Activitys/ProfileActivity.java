@@ -56,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnEditarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 i.putExtra("foto", foto);
                 i.putExtra("nombre", nombre);
