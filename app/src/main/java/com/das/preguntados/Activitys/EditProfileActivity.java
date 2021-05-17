@@ -72,11 +72,10 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String newNombre = editTextNombre.getText().toString().trim();
-                String newUsuario = editTextUsuario.getText().toString().trim();
                 String newEmail = editTextEmail.getText().toString().trim();
                 Data datos = new Data.Builder()
                         .putString("nombre", newNombre)
-                        .putString("usuario", newUsuario)
+                        .putString("usuario", usuario)
                         .putString("email", newEmail)
                         .putString("newFoto", newFoto)
                         .build();
@@ -90,7 +89,6 @@ public class EditProfileActivity extends AppCompatActivity {
                                 Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                                 i.putExtra("foto", newFoto);
                                 i.putExtra("nombre", newNombre);
-                                i.putExtra("usuario", newUsuario);
                                 i.putExtra("email", newEmail);
                                 startActivity(i);
                             }
