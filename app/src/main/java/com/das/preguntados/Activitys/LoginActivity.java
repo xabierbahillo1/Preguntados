@@ -124,6 +124,9 @@ public class LoginActivity extends ActivityVertical {
                                     startActivity(i);
                                 }
                             }
+                            else { //Fallo de conexion
+                                gestionarError(getString(R.string.login_error_conexionBD));
+                            }
 
                         }
                     }

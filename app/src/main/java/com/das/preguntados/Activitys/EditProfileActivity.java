@@ -146,21 +146,37 @@ public class EditProfileActivity extends ActivityVertical {
                                             String[] respuesta= resultado.split("#");
                                             if (respuesta[0].equals("ERR")){ //Hay un error
                                                 DialogFragment dialogoError= DialogMessage.newInstance(getString(R.string.editPerfil_errorTitle),gestionarMensajesError(respuesta[1]));
-                                                dialogoError.show(getSupportFragmentManager(), "errorRegistro");
+                                                dialogoError.show(getSupportFragmentManager(), "errorEditProfile");
                                                 //Muestro el error en los logs
                                                 Log.d("editProfile",gestionarMensajesError(respuesta[1]));
 
                                             }
                                             else if (respuesta[0].equals("OK")){ //Registro completado
                                                 Log.d("editProfile","Datos guardados correctamente");
-                                                finish();
-                                                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                                                i.putExtra("usuario", usuario);
-                                                startActivity(i);
+
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
+                                                builder.setMessage(R.string.editPerfil_guardadoOk).setPositiveButton(R.string.editPerfil_continuar, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        //Finalizo la actividad
+                                                        finish();
+                                                        Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                                                        i.putExtra("usuario", usuario);
+                                                        startActivity(i);
+                                                    }
+                                                });
+
+                                                builder.show();
+
                                             }
                                         }
-
+                                        else { //No conexion
+                                            DialogFragment dialogoError= DialogMessage.newInstance(getString(R.string.editPerfil_errorTitle),getString(R.string.register_error_conexionBD));
+                                            dialogoError.show(getSupportFragmentManager(), "errorEditProfile");
+                                            //Muestro el error en los logs
+                                            Log.d("editProfile",getString(R.string.register_error_conexionBD));
+                                        }
                                     }
+
                                 }
                             });
                     WorkManager.getInstance(getApplicationContext()).enqueue(registerOtwr);

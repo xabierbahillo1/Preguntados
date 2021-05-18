@@ -36,7 +36,7 @@ public class MainMenuActivity extends ActivityVertical {
             usuario=extras.getString("usuario");
         }
         // Funcionalidad de los botones
-        ImageButton btnJugar = findViewById(R.id.btnJugar);
+        Button btnJugar = findViewById(R.id.btnJugar);
         btnJugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

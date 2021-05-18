@@ -64,6 +64,7 @@ public class iniciarSesionWS extends Worker {
         }
         catch (Exception e){
             e.printStackTrace();
+            return Result.failure();
         }
         return null;
     }

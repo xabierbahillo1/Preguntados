@@ -19,6 +19,7 @@ import android.widget.Button;
 import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Dialogs.DialogAjustesJuego;
 
+import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.Dialogs.DialogoFinJuego1Fragment;
 import com.das.preguntados.Dialogs.DialogoFinJuego2Fragment;
 
@@ -114,7 +115,14 @@ public class GameSelectorActivity extends ActivityVertical implements DialogAjus
                                 }
                                 startActivityForResult(i,100);
                             }
+                            else{ //No hay preguntas
+                                DialogFragment dialogoError= DialogMessage.newInstance(getString(R.string.obtenerPreguntas_errorTitle),getString(R.string.obtenerPreguntas_errorText));
+                                dialogoError.show(getSupportFragmentManager(), "errorObtenerPreguntas");
+                                //Muestro el error en los logs
+                                Log.d("errorObtenerPreguntas",getString(R.string.obtenerPreguntas_errorText));
+                            }
                         }
+
                     }
                 });
         WorkManager.getInstance(getApplicationContext()).enqueue(obtenerPreguntasOtwr);

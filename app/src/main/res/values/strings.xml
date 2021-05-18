@@ -106,4 +106,10 @@
     <string name="editPerfil_guardar">GUARDAR</string>
     <string name="editPerfil_cambiarFoto">Cambiar foto del perfil</string>
     <string name="editPerfil_errorTitle">Error al guardar</string>
+    <string name="noConexion_text">No se ha podido conectar con la base de datos. Es necesaria la conexión a internet para poder jugar a Preguntados</string>
+    <string name="editPerfil_guardadoOk">Se han guardado los datos correctamente</string>
+    <string name="editPerfil_continuar">Continuar</string>
+    <string name="obtenerPreguntas_errorTitle">Error al obtener las preguntas</string>
+    <string name="obtenerPreguntas_errorText">No se ha podido conectar con la base de datos</string>
+    <string name="btnJugar">JUGAR</string>
 </resources>

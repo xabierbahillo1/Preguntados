@@ -142,6 +142,9 @@ public class RegistroActivity extends ActivityVertical {
                                     startActivity(i);
                                 }
                             }
+                            else{ //Fallo de conexion
+                                gestionarError(getString(R.string.register_error_conexionBD));
+                            }
 
                         }
                     }

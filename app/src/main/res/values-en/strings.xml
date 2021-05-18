@@ -107,4 +107,10 @@
     <string name="editPerfil_guardar">SAVE</string>
     <string name="editPerfil_cambiarFoto">Change profile photo</string>
     <string name="editPerfil_errorTitle">Save failed</string>
+    <string name="noConexion_text">Could not connect to the database. An internet connection is required to play Preguntados</string>
+    <string name="editPerfil_guardadoOk">The data has been saved correctly</string>
+    <string name="editPerfil_continuar">Continue</string>
+    <string name="obtenerPreguntas_errorTitle">Failed to get the questions</string>
+    <string name="obtenerPreguntas_errorText">Could not connect to the database</string>
+    <string name="btnJugar">PLAY</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.das.preguntados.Activitys;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Common.generateAuthToken;
+import com.das.preguntados.Dialogs.DialogNoConexion;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.obtenerDatosUsuarioWS;
 
@@ -105,6 +107,7 @@ public class ProfileActivity extends ActivityVertical {
     }
 
     private void obtenerDatos(String usuario) {
+        //Obtiene los datos para mostrar en el perfil del usuario
         Data datos = new Data.Builder()
                 .putString("usuario",usuario)
                 .build();
@@ -264,10 +267,14 @@ public class ProfileActivity extends ActivityVertical {
                                 }
 
                                 }
+                            else { //No conexion
+                                DialogFragment dialogoError= DialogNoConexion.newInstance();
+                                dialogoError.show(getSupportFragmentManager(), "noConexion");
                             }
-
                         }
-                    });
+
+                    }
+                });
         WorkManager.getInstance(getApplicationContext()).enqueue(obtenerDatosOtwr);
     }
 
