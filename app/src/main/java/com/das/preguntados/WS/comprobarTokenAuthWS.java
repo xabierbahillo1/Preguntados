@@ -65,6 +65,7 @@ public class comprobarTokenAuthWS extends Worker {
         }
         catch (Exception e){
             e.printStackTrace();
+            return Result.failure();
         }
         return null;
     }

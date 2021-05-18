@@ -32,7 +32,7 @@ public class obtenerDatosUsuarioWS extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/obtenerPreguntas.php";
+        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/obtenerDatosUsuario.php";
 
         HttpURLConnection urlConnection = null;
         try {
@@ -61,7 +61,7 @@ public class obtenerDatosUsuarioWS extends Worker {
                 inputStream.close();
                 //Trato la respuesta
                 if (result.contains("ERR#")){ //Tiene un error
-                    Log.d("obtenerPreguntas",result.split("#")[1]);
+                    Log.d("obtenerDatosUsuario",result.split("#")[1]);
                     return ListenableWorker.Result.failure();
                 }
                 //Obtengo el JSON con las preguntas

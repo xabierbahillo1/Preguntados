@@ -91,4 +91,20 @@
     <string name="menuJuego_Duelo">Duel</string>
     <string name="menuJuego_Ajustes">Game settings</string>
     <string name="menuJuego_Carrera">Race</string>
+    <string name="menuPerfil_Editar">EDIT PROFILE</string>
+    <string name="menuPerfil_CerrarSesion">SIGN OFF</string>
+    <string name="menuPerfil_preguntas1">You have answered</string>
+    <string name="menuPerfil_preguntas2">questions correctly</string>
+    <string name="menuPerfil_noJuego">You haven\'t played any games yet</string>
+    <string name="menuPerfil_noDuelo">You have not played any duel</string>
+    <string name="menuPerfil_duelo1">You have won</string>
+    <string name="menuPerfil_duelo2">duels</string>
+    <string name="menuPerfil_1duelo">duel</string>
+    <string name="menuPerfil_1pregunta">question correctly</string>
+    <string name="menuPerfil_cerradaSesion">The session has been closed</string>
+    <string name="menuPerfil_noGanaDuelo">You have not won any duel</string>
+    <string name="menuPerfil_noAcPregunta">You haven\'t got any questions right</string>
+    <string name="editPerfil_guardar">SAVE</string>
+    <string name="editPerfil_cambiarFoto">Change profile photo</string>
+    <string name="editPerfil_errorTitle">Save failed</string>
 </resources>

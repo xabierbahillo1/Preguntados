@@ -80,7 +80,7 @@
     <string name="duelo_derrota1">El jugador</string>
     <string name="duelo_derrota2">te ha ganado</string>
     <string name="duelo_victoria">Has ganado al jugador</string>
-    <string name="textCancelarEditarPerfil">¿Quieres cancelar la edición del perfil?</string>
+    <string name="textCancelarEditarPerfil">¿Quieres cancelar la edición del perfil? No se guardaran los cambios realizados</string>
     <string name="textSi">Sí</string>
     <string name="textNo">No</string>
     <string name="textCerrarSesion">¿Seguro que quieres cerrar la sesión?</string>
@@ -90,4 +90,20 @@
     <string name="menuJuego_Duelo">Duelo</string>
     <string name="menuJuego_Ajustes">Ajustes del juego</string>
     <string name="menuJuego_Carrera">Carrera</string>
+    <string name="menuPerfil_Editar">EDITAR PERFIL</string>
+    <string name="menuPerfil_CerrarSesion">CERRAR SESION</string>
+    <string name="menuPerfil_preguntas1">Has respondido</string>
+    <string name="menuPerfil_preguntas2">preguntas correctamente</string>
+    <string name="menuPerfil_noJuego">Aún no has jugado ninguna partida</string>
+    <string name="menuPerfil_noDuelo">No has jugado ningún duelo</string>
+    <string name="menuPerfil_duelo1">Has ganado</string>
+    <string name="menuPerfil_duelo2">duelos</string>
+    <string name="menuPerfil_1duelo">duelo</string>
+    <string name="menuPerfil_1pregunta">pregunta correctamente</string>
+    <string name="menuPerfil_cerradaSesion">Se ha cerrado la sesión</string>
+    <string name="menuPerfil_noGanaDuelo">No has ganado ningún duelo</string>
+    <string name="menuPerfil_noAcPregunta">No has acertado ninguna pregunta</string>
+    <string name="editPerfil_guardar">GUARDAR</string>
+    <string name="editPerfil_cambiarFoto">Cambiar foto del perfil</string>
+    <string name="editPerfil_errorTitle">Error al guardar</string>
 </resources>

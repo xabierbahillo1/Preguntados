@@ -24,9 +24,7 @@ public class MainMenuActivity extends ActivityVertical {
      */
 
     private String usuario; //Referencia al usuario que ha iniciado sesion
-    private String nombre;
-    private String email;
-    private String foto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +60,9 @@ public class MainMenuActivity extends ActivityVertical {
         btnPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish(); //Finalizo la actividad
                 Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                i.putExtra("foto", MainMenuActivity.this.foto);
-                i.putExtra("nombre", MainMenuActivity.this.nombre);
                 i.putExtra("usuario", MainMenuActivity.this.usuario);
-                i.putExtra("email", MainMenuActivity.this.email);
                 startActivity(i);
             }
         });
