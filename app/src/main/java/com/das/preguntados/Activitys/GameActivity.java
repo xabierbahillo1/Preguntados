@@ -1,7 +1,5 @@
 package com.das.preguntados.Activitys;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 

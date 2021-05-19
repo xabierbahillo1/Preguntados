@@ -17,7 +17,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,7 +34,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.ByteArrayOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -46,7 +44,7 @@ public class ProfileActivity extends ActivityVertical {
     private String usuario;
     private String nombre;
     private String email;
-    private String foto; //Foto en formato base-64
+    private String foto; //Uri de la foto
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +56,7 @@ public class ProfileActivity extends ActivityVertical {
         }
 
         Bundle extras= getIntent().getExtras();
-        if (extras!= null){
+        if (extras!= null){ //Obtengo el usuario pasado como parametro
             usuario=extras.getString("usuario");
         }
 
@@ -68,7 +66,7 @@ public class ProfileActivity extends ActivityVertical {
         //Se ocultan todos los campos hasta cargar todos los datos
         visibilidadCampos(View.GONE);
 
-        obtenerDatos(usuario);
+        obtenerDatos(usuario); //Obtengo los datos del usuario desde BD
 
         Button btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
         btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
@@ -290,6 +288,8 @@ public class ProfileActivity extends ActivityVertical {
         startActivity(i);
     }
     private void visibilidadCampos(int visibility){
+        //Muestra o deja de mostrar los campos que componen la actividad
+        //Parametros: View.GONE -> No mostrar ; View.VISIBLE -> Mostrar
         findViewById(R.id.profileLayout).setVisibility(visibility);
     }
 

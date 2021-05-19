@@ -2,7 +2,6 @@ package com.das.preguntados.Activitys;
 
 import androidx.annotation.NonNull;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.work.Data;

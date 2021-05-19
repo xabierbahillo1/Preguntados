@@ -12,12 +12,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Base64;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +30,6 @@ import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.ActualizarPerfilWS;
 
-import java.io.ByteArrayOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Matcher;
@@ -53,15 +52,15 @@ public class EditProfileActivity extends ActivityVertical {
             StrictMode.setThreadPolicy(policy);
         }
 
+        //Obtengo los datos enviados a la actividad como parametro
         String nombre = getIntent().getExtras().getString("nombre");
         usuario = getIntent().getExtras().getString("usuario");
         String email = getIntent().getExtras().getString("email");
-
-        //Cargo la foto de perfil
         String foto = getIntent().getExtras().getString("foto");
 
+        //Cargo la foto de perfil
         ImageView imgPerfilEdit = findViewById(R.id.imgPerfilEdit);
-        if (foto!=null && foto!=""){
+        if (foto!=null && foto!=""){ //Si hay foto la descargo del servidor
             String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/"+foto;
             URL destino = null;
             try {
@@ -81,7 +80,8 @@ public class EditProfileActivity extends ActivityVertical {
             imgPerfilEdit.setImageDrawable(getDrawable(R.drawable.imgavatar));
         }
 
-        String newFoto = null;
+        // -- GESTION EVENTO CAMBIAR FOTO DE PERFIL --
+        String newFoto = null; //Guarda la referencia a la nueva foto
 
         imgPerfilEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,17 +97,21 @@ public class EditProfileActivity extends ActivityVertical {
                 gestionarSubirFoto();
             }
         });
+        // --------------------------------------------
 
+        //Introduzco en los editText los valores de nombreCompleto y email del usuario
         EditText editTextNombre = findViewById(R.id.editTextNombre);
         editTextNombre.setText(nombre);
 
         EditText editTextEmail = findViewById(R.id.editTextEmail);
         editTextEmail.setText(email);
 
+        //Gestion boton guardar cambios
         Button btnAceptarPerfil = findViewById(R.id.btnAceptarPerfil);
         btnAceptarPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Obtengo el nuevo nombre y nuevo email
                 String newNombre = editTextNombre.getText().toString().trim();
                 String newEmail = editTextEmail.getText().toString().trim();
 
@@ -123,7 +127,7 @@ public class EditProfileActivity extends ActivityVertical {
                     //Muestro el error en los logs
                     Log.d("editProfile",getString(R.string.register_error_correoIncorrecto));
                 }
-                else {
+                else { //Correcto, envio los nuevos datos a la base de datos
 
                     Data datos = new Data.Builder()
                             .putString("nombre", newNombre)
@@ -151,22 +155,20 @@ public class EditProfileActivity extends ActivityVertical {
                                                 Log.d("editProfile",gestionarMensajesError(respuesta[1]));
 
                                             }
-                                            else if (respuesta[0].equals("OK")){ //Registro completado
+                                            else if (respuesta[0].equals("OK")){ //Cambios guardados
                                                 Log.d("editProfile","Datos guardados correctamente");
-
+                                                //Muestro un dialog indicando que se han guardado los datos correctamente
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
                                                 builder.setMessage(R.string.editPerfil_guardadoOk).setPositiveButton(R.string.editPerfil_continuar, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int id) {
-                                                        //Finalizo la actividad
+                                                        //Pulsa continuar, finalizo la actividad y vuelvo a el perfil
                                                         finish();
                                                         Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
                                                         i.putExtra("usuario", usuario);
                                                         startActivity(i);
                                                     }
                                                 });
-
                                                 builder.show();
-
                                             }
                                         }
                                         else { //No conexion
@@ -186,6 +188,7 @@ public class EditProfileActivity extends ActivityVertical {
     }
 
     public void onBackPressed() {
+        //Pulsa el boton volver, se muestra un mensaje indicando que no se guardaran los cambios realizados
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
         builder.setMessage(R.string.textCancelarEditarPerfil).setPositiveButton(R.string.textSi, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -210,12 +213,14 @@ public class EditProfileActivity extends ActivityVertical {
     }
 
     private void gestionarSubirFoto(){
+        //Lanza un intent para obtener una foto de la galeria
         Intent intentFoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intentFoto, 14);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 14 && resultCode == RESULT_OK) {
+            //Obtengo la imagen seleccionada de la galeria
             Uri imagenSeleccionada = data.getData();
             ImageView imgPreview = findViewById(R.id.imgPerfilEdit);
             imgPreview.setImageURI(imagenSeleccionada);

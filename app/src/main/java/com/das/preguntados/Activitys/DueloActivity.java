@@ -1,7 +1,6 @@
 package com.das.preguntados.Activitys;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
+
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;

@@ -1,6 +1,5 @@
 package com.das.preguntados.Activitys;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.work.Data;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.Common.generateAuthToken;
-import com.das.preguntados.Dialogs.DialogMessage;
 import com.das.preguntados.Dialogs.DialogNoConexion;
 import com.das.preguntados.R;
 import com.das.preguntados.WS.comprobarTokenAuthWS;
