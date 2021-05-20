@@ -80,7 +80,7 @@
     <string name="duelo_derrota1">El jugador</string>
     <string name="duelo_derrota2">te ha ganado</string>
     <string name="duelo_victoria">Has ganado al jugador</string>
-    <string name="textCancelarEditarPerfil">¿Quieres cancelar la edición del perfil? No se guardaran los cambios realizados</string>
+    <string name="textCancelarEditarPerfil">¿Quieres cancelar la edición del perfil?</string>
     <string name="textSi">Sí</string>
     <string name="textNo">No</string>
     <string name="textCerrarSesion">¿Seguro que quieres cerrar la sesión?</string>
@@ -112,4 +112,8 @@
     <string name="obtenerPreguntas_errorTitle">Error al obtener las preguntas</string>
     <string name="obtenerPreguntas_errorText">No se ha podido conectar con la base de datos</string>
     <string name="btnJugar">JUGAR</string>
+    <string name="btnRankingChange">Cambiar modo</string>
+    <string name="textRanking1">CARRERA</string>
+    <string name="textRanking2">CONTRARRELOJ</string>
+    <string name="btnClose">Cerrar</string>
 </resources>

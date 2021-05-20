@@ -113,4 +113,8 @@
     <string name="obtenerPreguntas_errorTitle">Failed to get the questions</string>
     <string name="obtenerPreguntas_errorText">Could not connect to the database</string>
     <string name="btnJugar">PLAY</string>
+    <string name="btnRankingChange">Change mode</string>
+    <string name="textRanking1">RACE</string>
+    <string name="textRanking2">TIME TRIAL</string>
+    <string name="btnClose">Close</string>
 </resources>
