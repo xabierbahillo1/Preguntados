@@ -52,7 +52,8 @@ public class MainMenuActivity extends AppCompatActivity {
         btnRanking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getApplicationContext(), RankingActivity.class);
+                startActivity(i);
             }
         });
 

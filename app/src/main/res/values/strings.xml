@@ -84,4 +84,8 @@
     <string name="textSi">Sí</string>
     <string name="textNo">No</string>
     <string name="textCerrarSesion">¿Seguro que quieres cerrar la sesión?</string>
+    <string name="btnRankingChange">Cambiar modo</string>
+    <string name="textRanking1">CARRERA</string>
+    <string name="textRanking2">CONTRARRELOJ</string>
+    <string name="btnClose">Cerrar</string>
 </resources>

@@ -85,4 +85,8 @@
     <string name="textSi">Yes</string>
     <string name="textNo">No</string>
     <string name="textCerrarSesion">Are you sure you want to log out?</string>
+    <string name="btnRankingChange">Change mode</string>
+    <string name="textRanking1">RACE</string>
+    <string name="textRanking2">TIME TRIAL</string>
+    <string name="btnClose">Close</string>
 </resources>
