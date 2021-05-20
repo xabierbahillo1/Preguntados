@@ -36,9 +36,9 @@ public class RankingActivityAlt extends ActivityVertical {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking_alt);
 
+        // Configurar elementos del layout
         TextView textRanking = findViewById(R.id.textRanking2);
         textRanking.setText(R.string.textRanking2);
-
 
         Button btnClose = findViewById(R.id.btnCloseAlt);
         btnClose.setText(R.string.btnClose);
@@ -61,6 +61,8 @@ public class RankingActivityAlt extends ActivityVertical {
         });
 
         ListView list = findViewById(R.id.rankingListAlt);
+
+        // Cargar ranking y obtener las listas con los datos para la listView
         ArrayList[] listas = obtenerInfo();
         ArrayList<String> nameList = listas[0];
         ArrayList<String> puntuacionList = listas[1];
@@ -71,12 +73,15 @@ public class RankingActivityAlt extends ActivityVertical {
     }
 
     public ArrayList<String>[] obtenerInfo() {
+        // Inicialización de las listas
         ArrayList<String> nameList = new ArrayList<String>();
         ArrayList<String> puntuacionList = new ArrayList<String>();
         ArrayList<Bitmap> fotoList = new ArrayList<Bitmap>();
+
         // Forzar la ejecución en primer plano
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
         // Petición http
         String direccion = "http://ec2-54-242-79-204.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/obtenerRanking2.php";
         HttpURLConnection urlConnection = null;
@@ -107,7 +112,7 @@ public class RankingActivityAlt extends ActivityVertical {
                     // Obtener el array de anuncios
                     JSONArray jsonArray = (JSONArray) parser.parse(result);
                     for (int i = 0; i < jsonArray.size(); i++) {
-                        // Por cada entrada, obtiene los datos y crea un anuncio, añadiéndolo a la lista local
+                        // Por cada entrada, obtiene los datos y añade los datos a las distintas listas
                         JSONObject json = (JSONObject) jsonArray.get(i);
                         String nombreCompleto = (String) json.get("nombre");
                         String puntuacion = (String) json.get("puntuacion");
@@ -116,9 +121,11 @@ public class RankingActivityAlt extends ActivityVertical {
                         puntuacionList.add(puntuacion);
 
                         if (foto == null || foto.equals("")) {
+                            // Si no hay foto para dicho usuario, se pone una estándar
                             Bitmap elBitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.imgavatar);
                             fotoList.add(elBitmap);
                         } else {
+                            // Obtener la foto de la ruta dada por la primera respuesta
                             String direccion2 = "http://ec2-54-242-79-204.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/" + foto;
                             try {
                                 URL destino2 = new URL(direccion2);
@@ -126,11 +133,8 @@ public class RankingActivityAlt extends ActivityVertical {
                                 int responseCode2 = 0;
                                 responseCode2 = urlConnection2.getResponseCode();
                                 if (responseCode2 == HttpURLConnection.HTTP_OK) {
-                                    System.out.println("////////////////////");
-                                    System.out.println(foto);
-                                    System.out.println("////////////////////");
+                                    // Obtener el bitmap y guardarlo en la lista de fotos
                                     Bitmap elBitmap = BitmapFactory.decodeStream(urlConnection2.getInputStream());
-                                    System.out.println(elBitmap);
                                     fotoList.add(elBitmap);
                                 }
                             } catch (MalformedURLException e) {
@@ -138,13 +142,13 @@ public class RankingActivityAlt extends ActivityVertical {
                             }
                         }
                     }
+                    // Devolver las tres listas juntas
                     ArrayList[] listas = new ArrayList[3];
-
                     listas[0] = nameList;
                     listas[1] = puntuacionList;
                     listas[2] = fotoList;
-
                     return listas;
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

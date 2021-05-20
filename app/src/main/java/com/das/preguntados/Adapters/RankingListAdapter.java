@@ -59,8 +59,8 @@ public class RankingListAdapter extends BaseAdapter {
         TextView puntuacion= (TextView) view.findViewById(R.id.textFilaListaPuntuacion);
         puntuacion.setText(puntuaciones.get(position));
 
+        // Colocar la imagen del ArrayList al imageView circular
         CircleImageView img=(CircleImageView) view.findViewById(R.id.listImage);
-        //Decodificar la imagen de base 64 a BitMap y ponerla en el imageView
         Bitmap foto = fotos.get(position);
         img.setImageBitmap(foto);
 
