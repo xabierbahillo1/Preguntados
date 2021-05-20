@@ -24,7 +24,7 @@
         android:padding="2dp"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#4d4d4d"
+        android:textColor="#B6B6B6"
         android:textStyle="bold" />
 
     <TextView
@@ -36,6 +36,6 @@
         android:padding="2dp"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#4d4d4d"
+        android:textColor="#F1F1F1"
         android:textStyle="bold" />
 </LinearLayout>
