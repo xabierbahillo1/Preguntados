@@ -222,6 +222,7 @@ public class GameActivity extends ActivityVertical implements DialogoSalirJuegoF
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    contadorPregunta.cancel();
                     finish();
                 }
             },3000);

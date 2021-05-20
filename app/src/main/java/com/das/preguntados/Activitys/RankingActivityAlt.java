@@ -1,7 +1,5 @@
 package com.das.preguntados.Activitys;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.das.preguntados.Adapters.RankingListAdapter;
+import com.das.preguntados.Common.ActivityVertical;
 import com.das.preguntados.R;
 
 import org.json.simple.JSONArray;
@@ -30,7 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class RankingActivityAlt extends AppCompatActivity {
+public class RankingActivityAlt extends ActivityVertical {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -6,59 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".Activitys.RankingActivity">
 
-    <ListView
-        android:id="@+id/rankingList"
-        android:layout_width="410dp"
-        android:layout_height="482dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.551"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.388" />
-
-    <Button
-        android:id="@+id/btnChangeRanking"
-        android:layout_width="186dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="92dp"
-        android:background="@drawable/boton_redondeado"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rankingList"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/btnClose"
-        android:layout_width="186dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/boton_redondeado"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnChangeRanking"
-        app:layout_constraintVertical_bias="0.609" />
-
-    <TextView
-        android:id="@+id/textRanking1"
-        android:layout_width="250dp"
-        android:layout_height="45dp"
-        android:textSize = "35sp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:text="TextView"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/rankingList"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textRanking1"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="35sp" />
+
+        <ListView
+            android:id="@+id/rankingList"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+        </ListView>
+
+        <Button
+            android:id="@+id/btnChangeRanking"
+            android:layout_width="186dp"
+            android:layout_height="51dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/boton_redondeado"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="186dp"
+            android:layout_height="51dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/boton_redondeado"
+            android:text="Button" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
