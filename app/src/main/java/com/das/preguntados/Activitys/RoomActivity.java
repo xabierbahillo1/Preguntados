@@ -9,6 +9,8 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -308,45 +310,23 @@ public class RoomActivity extends ActivityVertical {
                     }
                 }
             }
-            int puntuacion = data.getIntExtra("puntuacion",0);
-            int preguntasCorrectas = data.getIntExtra("preguntasCorrectas",0);
-            int preguntasIncorrectas = data.getIntExtra("preguntasIncorrectas",0);
-            int modo= data.getIntExtra("modo",0);
-            boolean guardarPartida= data.getBooleanExtra("guardarPartida",false);
-            if (guardarPartida) { //Si esta activada la variable guardarPartida
-                if (modo == 0) {
-                    Log.d("modo", "No se ha recibido ningun modo, revisar GameActivity");
-                } else { //Modo correcto
-                    //Envio los datos de la partida a Base de datos
-                    Data datos = new Data.Builder()
-                            .putString("usuario", usuario)
-                            .putInt("modo", modo)
-                            .putInt("puntuacion", puntuacion)
-                            .putInt("preguntasCorrectas", preguntasCorrectas)
-                            .putInt("preguntasIncorrectas", preguntasIncorrectas)
-                            .build();
-                    OneTimeWorkRequest registrarDatosPartidaOtwr = new OneTimeWorkRequest.Builder(registrarDatosPartidaWS.class).setInputData(datos)
-                            .build();
-                    WorkManager.getInstance(getApplicationContext()).enqueue(registrarDatosPartidaOtwr);
-
-                    //Muestro el dialog fin de juego
-                    if (modo == 1) { //Dialog Modo de juego 1
-                        DialogoFinJuego1Fragment dialogoFinJuego = new DialogoFinJuego1Fragment(preguntasCorrectas);
-                        dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego1");
-                    } else if (modo == 2) { //Dialog Modo de juego 2
-                        DialogoFinJuego2Fragment dialogoFinJuego = new DialogoFinJuego2Fragment(puntuacion, preguntasCorrectas, preguntasIncorrectas);
-                        dialogoFinJuego.show(getSupportFragmentManager(), "DialogoFinJuego2");
-                    }
-                }
-            }
-
         }
     }
 
     private void lanzarMensajeFinJuego(String titulo, String mensaje){
         //Lanza la actividad que muestra el mensaje fin del juego
-        DialogFragment dialogoFin= DialogMessage.newInstance(titulo,mensaje);
-        dialogoFin.show(getSupportFragmentManager(), "finJuego");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(titulo)
+                .setMessage(mensaje)
+                .setPositiveButton(getString(R.string.alert_btnContinuar), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // Si dice que sí, se recrea la actividad, para evitar que se quede una sala vieja
+                roomRef.removeEventListener(listener); //Borro el eventListener
+                recreate();
+            }
+        });
+        builder.show();
     }
 }
 
