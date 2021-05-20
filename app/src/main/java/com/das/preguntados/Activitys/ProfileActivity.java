@@ -139,7 +139,7 @@ public class ProfileActivity extends ActivityVertical {
                                         ProfileActivity.this.foto = fotoUri; //Guardo la uri de la foto
 
                                         //Descargo la foto del servidor
-                                        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/"+fotoUri;
+                                        String direccion = "http://ec2-54-242-79-204.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/"+fotoUri;
                                         URL destino = null;
                                         try {
                                             destino = new URL(direccion);

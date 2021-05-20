@@ -61,7 +61,7 @@ public class EditProfileActivity extends ActivityVertical {
         //Cargo la foto de perfil
         ImageView imgPerfilEdit = findViewById(R.id.imgPerfilEdit);
         if (foto!=null && foto!=""){ //Si hay foto la descargo del servidor
-            String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/"+foto;
+            String direccion = "http://ec2-54-242-79-204.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/"+foto;
             URL destino = null;
             try {
                 destino = new URL(direccion);

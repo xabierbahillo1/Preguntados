@@ -32,7 +32,7 @@ public class ActualizarPerfilWS extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/actualizarUsuario.php";
+        String direccion = "http://ec2-54-242-79-204.compute-1.amazonaws.com/xbahillo001/WEB/preguntados/actualizarUsuario.php";
 
         HttpURLConnection urlConnection = null;
         try {
